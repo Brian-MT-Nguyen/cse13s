@@ -1,3 +1,3 @@
-# cse13s-template
+# CSE13S Repo
 
-Template repo for cse13s.
+Repo to hold CSE13S work.
