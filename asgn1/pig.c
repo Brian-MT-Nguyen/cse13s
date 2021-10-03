@@ -82,3 +82,4 @@ int main(void){
 	}
 	fprintf(stdout, "\n%s wins with %d points!\n", names[currentplayer], points[currentplayer]);
 }
+
