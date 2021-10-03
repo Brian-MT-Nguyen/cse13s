@@ -65,7 +65,7 @@ int main(void) {
             sameplayer = 1;
         }
         if (pig[roll] == TROTTER) {
-            printf("pig lands on upright ");
+            printf("pig lands upright ");
             points[currentplayer] += 10;
             sameplayer = 1;
         }
