@@ -22,8 +22,8 @@ int main(void) {
     int iseed;
     printf("Random seed: ");
     int seedcheck = scanf("%d", &iseed);
-    if(seedcheck == 1) {
-    	srand(iseed);
+    if (seedcheck == 1) {
+        srand(iseed);
     }
     if (seedcheck != 1) {
         srand(SEED);
@@ -43,13 +43,13 @@ int main(void) {
     int sameplayer = 0;
     int hard = 0;
 
-    printf("%s rolls the pig... ", names[currentplayer]);    
+    printf("%s rolls the pig... ", names[currentplayer]);
     //Keeps playing until someone reaches one hundred points
     while (points[currentplayer] < 100) {
-	//Rolls from zero to six
+        //Rolls from zero to six
         int roll = rand() % 7;
 
-	//Adds points or forfeits turns based on roll
+        //Adds points or forfeits turns based on roll
         if (sameplayer == 0 && hard == 1) {
             printf("\n%s rolls the pig... ", names[currentplayer]);
         }
@@ -79,7 +79,7 @@ int main(void) {
             points[currentplayer] += 5;
             sameplayer = 1;
         }
-	hard = 1;
+        hard = 1;
     }
 
     //Congradulates Winner
