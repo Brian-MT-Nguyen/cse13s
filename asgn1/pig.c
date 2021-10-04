@@ -24,7 +24,7 @@ int main(void) {
     int seedcheck = scanf("%d", &iseed);
     if (seedcheck != 1) {
         srand(SEED);
-        fprintf(stderr, "Invalid random seed. Using 2021 instead.");
+        fprintf(stderr, "Invalid random seed. Using 2021 instead.\n");
     } else {
         srand(iseed);
     }
@@ -48,10 +48,12 @@ int main(void) {
         //Rolls from zero to six
         int roll = rand() % 7;
 
-        //Adds points or forfeits turns based on roll
+        //Only prints player rolling if its a new player rolling
         if (sameplayer == 0 && hard == 1) {
             printf("\n%s rolls the pig...", names[currentplayer]);
         }
+
+        //Adds points or forfeits turn based on roll
         if (pig[roll] == SIDE) {
             printf(" pig lands on side");
             currentplayer++;
