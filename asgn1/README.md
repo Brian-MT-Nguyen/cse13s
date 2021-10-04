@@ -5,7 +5,7 @@ This program simulates a game of Pass the Pigs given user input of the amount of
 
 ## How to Build
 1. Must have pig.c and names.h in the same directory and folder as well as "Makefile" in order to construct and compile the program via clang with ease. 
-2. With 3 of the files in the same folder, one must construct and compile pig.c to run with:
+2. With 3 of the files in the same folder, one must construct and compile pig.c to run it with:
 ```
 $ make
 ```
