@@ -8,5 +8,6 @@ This program simulates a game of Pass the Pigs given user input of the amount of
 2. With 3 of the files in the same folder, one must run the "make" command made by the Makefile to construct and compile pig.c to be run.
 
 ## How to Run
-3. Once the command has been successfully executed, run the program by typing "./pig" while in the same folder and directory as it to run the program.
-4. Input the players and random number seed as prompted and the game while simulate.
+1. Once the command has been successfully executed, run the program by typing "./pig" while in the same folder and directory as it to run the program.
+2. Input the number of players participating which has to be an integer between 2 and 10 inclusive
+3. Input a random integer that will be the random seed as prompted, then the game will simulate.
