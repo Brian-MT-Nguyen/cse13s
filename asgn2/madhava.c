@@ -18,7 +18,7 @@ double pi_madhava(void) {
         currentval = currentval + ((1 / top) / (2 * k + 1));
         computed_terms++;
     }
-    return sqrt_newton(currentval);
+    return sqrt_newton(12) * currentval;
 }
 
 int pi_madhava_terms(void) {
