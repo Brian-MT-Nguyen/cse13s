@@ -102,11 +102,11 @@ int main(int argc, char **argv) {
         }
         if (run_newton == true) {
             int newton_iters = sqrt_newton_iters();
-            printf("sqrt_newton() iters = %d\n", newton_iters);
+            printf("sqrt_newton() terms = %d\n", newton_iters);
         }
         if (run_viete == true) {
             int viete_factors = pi_viete_factors();
-            printf("pi_viete() factors = %d\n", viete_factors);
+            printf("pi_viete() terms = %d\n", viete_factors);
         }
     }
 }
