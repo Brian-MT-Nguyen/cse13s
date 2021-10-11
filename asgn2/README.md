@@ -5,7 +5,7 @@ This contains a collection of programs that all contain math functions that try 
 
 ## How to Build
 1. Must have all 6 math functions (bbp.c, e.c, euler.c, madhava.c, newton.c, and viete.c) and the main  test function mathlib-test.c in the same directory and folder as well as "Makefile" in order to construct and compile the program via clang with ease.
-2. With 7 of the files in the same folder, one must construct and compile the library to run it with:
+2. With 8 of the files in the same folder, one must construct and compile the library to run it with:
 ```
 $ make
 ```
