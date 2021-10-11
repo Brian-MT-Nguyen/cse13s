@@ -1,13 +1,14 @@
-#include "math.h"
+#include "mathlib.h"
 #include <stdio.h>
 
 static int computed_terms = 1;
-double previousval = -1;
-double currentval = 1;
-double term = 1.0;
 
 double pi_euler(void) {
-        for (int k = 2; absolute(currentval - previousval) > EPSILON; k++) {
+	double previousval = -1;
+	double currentval = 1;
+	double term = 1.0;
+
+        for (long int k = 2; absolute(currentval - previousval) > EPSILON; k++) {
                 previousval = currentval;
 		term = 1.0/(k*k);
                 currentval += term;

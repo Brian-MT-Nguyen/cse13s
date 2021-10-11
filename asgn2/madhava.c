@@ -2,12 +2,12 @@
 #include <stdio.h>
 
 static int computed_terms = 1;
-double previousval = 0;
-double currentval = 1;
-double top = 1;
-double bottom = 0;
 
 double pi_madhava(void) {
+	double previousval = 0;
+	double currentval = 1;
+	double top = 1;
+
 	for (int k = 1; absolute(currentval - previousval) > EPSILON; k++) {
 		previousval = currentval;
 		top = 1;
@@ -15,10 +15,9 @@ double pi_madhava(void) {
 			top = top * -3;
 		}
 		currentval = currentval + ((1/top)/(2*k+1));
-		currentval = total;
 		computed_terms++;		
 	}
-	return sqrt_newton(total);
+	return sqrt_newton(currentval);
 }
 
 int pi_madhava_terms(void) {

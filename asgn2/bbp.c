@@ -2,11 +2,12 @@
 #include <stdio.h>
 
 static int computed_terms = 1;
-double previousval = 0;
-double currentval = 47.0/15.0;
-double top = 1.0;
 
 double pi_bbp(void) {
+	double previousval = 0;
+	double currentval = 47.0/15.0;
+	double top = 1.0;
+
         for (int k = 1; absolute(currentval - previousval) > EPSILON; k++) {
                 previousval = currentval;
                 top = 1;
