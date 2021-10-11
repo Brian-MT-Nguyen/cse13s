@@ -71,17 +71,22 @@ int main(int argc, char **argv) {
         printf("pi_madhava() = %16.15lf, M_PI = %16.15lf, diff = %16.15lf\n", my_madhava, pi,
             absolute(my_madhava - pi));
     }
+    if (run_viete == true) {
+        double my_viete = pi_viete();
+        printf("pi_viete() = %16.15lf, M_PI = %16.15lf, diff = %16.15lf\n", my_viete, pi,
+            absolute(my_viete - pi));
+    }
+
     if (run_newton == true) {
         for (double i = 0.0; i < 10; i += 0.1) {
             double my_newton = sqrt_newton(i);
             printf("sqrt_newton(%f) = %16.15lf, sqrt(%f) = %16.15lf, diff = %16.15lf\n", i,
                 my_newton, i, sqrt(i), absolute(my_newton - sqrt(i)));
+            if (run_stats == true) {
+                int newton_terms = sqrt_newton_iters();
+                printf("sqrt_newton() terms = %d\n", newton_terms);
+            }
         }
-    }
-    if (run_viete == true) {
-        double my_viete = pi_viete();
-        printf("pi_viete() = %16.15lf, M_PI = %16.15lf, diff = %16.15lf\n", my_viete, pi,
-            absolute(my_viete - pi));
     }
     if (run_stats == true) {
         if (run_e == true) {
@@ -99,10 +104,6 @@ int main(int argc, char **argv) {
         if (run_madhava == true) {
             int madhava_terms = pi_madhava_terms();
             printf("pi_madhava() terms = %d\n", madhava_terms);
-        }
-        if (run_newton == true) {
-            int newton_iters = sqrt_newton_iters();
-            printf("sqrt_newton() terms = %d\n", newton_iters);
         }
         if (run_viete == true) {
             int viete_factors = pi_viete_factors();

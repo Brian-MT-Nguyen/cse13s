@@ -6,6 +6,7 @@ static int counted_iters = 0;
 double sqrt_newton(double x) {
     double z = 0.0;
     double y = 1.0;
+    counted_iters = 0;
 
     while (absolute(y - z) > EPSILON) {
         z = y;
