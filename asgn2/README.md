@@ -14,6 +14,9 @@ $ make
 1. Once the command has been successfully executed, run the program with:
 ```
 $ ./mathlib-test <flag>
+
+flag:
+-a runs all programs; -e runs e.c; -b runs bbp.c; -m runs madhava.c; -r runs euler.c; -v runs viete.c; -n runs newton.c; -s runs the terms of specificed program (Requires additional arg); -h displays help msg prompt
 ```
 2. If unsure of what command to input, one can either not include a flag and run the command, or include the -h flag to see the help documentation.
 
