@@ -16,7 +16,7 @@
 #define SEED    13371453
 #define SIZE    100
 
-typedef enum { INSERTION, HEAP, QUICK, SHELL, PRINT } Sorts;
+typedef enum { INSERTION, HEAP, QUICK, SHELL, PRINT, HELP } Sorts;
 
 int main(int argc, char **argv) {
     Set sorts = empty_set();
@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
             sorts = insert_set(PRINT, sorts);
             elements = atoi(optarg);
             break;
-        case 'h': break;
+        case 'h': sorts = insert_set(HELP, sorts); break;
         }
     }
 
@@ -57,8 +57,21 @@ int main(int argc, char **argv) {
         A[i] = (random() & bitmask);
     }
 
-    if (sorts == empty_set()) {
-        printf("Help");
+    if (member_set(HELP, sorts) || sorts == empty_set()) {
+        printf("SYNOPSIS\n");
+        printf("   A test harness for the small numerical library.\n\n");
+        printf("USAGE\n");
+        printf("   $ ./mathlib-test [-aebmrvnsh]\n\n");
+        printf("OPTIONS\n");
+        printf("  -a   Runs all tests.\n");
+        printf("  -e   Runs e pi test.\n");
+        printf("  -b   Runs BBP pi test.\n");
+        printf("  -m   Runs Madhava pi test.\n");
+        printf("  -r   Runs Euler pi test.\n");
+        printf("  -v   Runs Viete pi test.\n");
+        printf("  -n   Runs Newton square root tests.\n");
+        printf("  -s   Print verbose statistics.\n");
+        printf("  -h   Display program synopsis and usage.\n");
     }
     if (member_set(HEAP, sorts)) {
         for (uint32_t i = 0; i < elements; i++) {
