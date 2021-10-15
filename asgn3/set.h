@@ -26,8 +26,8 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 typedef uint64_t Set;
 
@@ -49,10 +49,18 @@ static inline Set delete_set(uint32_t x, Set s) {
     return (s & ~(0x1 << (x & mask)));
 }
 
-static inline Set union_set(Set s, Set t) { return (s | t); }
+static inline Set union_set(Set s, Set t) {
+    return (s | t);
+}
 
-static inline Set intersect_set(Set s, Set t) { return (s & t); }
+static inline Set intersect_set(Set s, Set t) {
+    return (s & t);
+}
 
-static inline Set difference_set(Set s, Set t) { return (s & ~t); }
+static inline Set difference_set(Set s, Set t) {
+    return (s & ~t);
+}
 
-static inline Set complement_set(Set s) { return ~s; }
+static inline Set complement_set(Set s) {
+    return ~s;
+}
