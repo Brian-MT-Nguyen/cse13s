@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
     uint32_t seed = SEED;
     uint32_t size = SIZE;
     uint32_t elements = SIZE;
-    int set_counter = 0;
+
     while ((opt = getopt(argc, argv, OPTIONS)) != -1) {
         switch (opt) {
         case 'a':
@@ -34,22 +34,10 @@ int main(int argc, char **argv) {
             sorts = insert_set(QUICK, sorts);
             sorts = insert_set(SHELL, sorts);
             break;
-        case 'e':
-            sorts = insert_set(HEAP, sorts);
-            set_counter++;
-            break;
-        case 'i':
-            sorts = insert_set(INSERTION, sorts);
-            set_counter++;
-            break;
-        case 's':
-            sorts = insert_set(SHELL, sorts);
-            set_counter++;
-            break;
-        case 'q':
-            sorts = insert_set(QUICK, sorts);
-            set_counter++;
-            break;
+        case 'e': sorts = insert_set(HEAP, sorts); break;
+        case 'i': sorts = insert_set(INSERTION, sorts); break;
+        case 's': sorts = insert_set(SHELL, sorts); break;
+        case 'q': sorts = insert_set(QUICK, sorts); break;
         case 'r': seed = atoi(optarg); break;
         case 'n': size = atoi(optarg); break;
         case 'p': elements = atoi(optarg); break;
@@ -60,16 +48,21 @@ int main(int argc, char **argv) {
     srand(seed);
     uint32_t bitmask = 0x3FFFFFFF;
     uint32_t *A = (uint32_t *) calloc(size, sizeof(uint32_t));
+    uint32_t *B = (uint32_t *) calloc(size, sizeof(uint32_t));
 
-    if (elements > (set_counter * size)) {
-        elements = (set_counter * size);
-    }
     for (uint32_t i = 0; i < size; i++) {
         A[i] = (random() & bitmask);
+    }
+    for (uint32_t i = 0; i < size; i++) {
+        B[i] = A[i];
     }
     Stats stats;
     stats.moves = 0;
     stats.compares = 0;
+
+    if (elements > size) {
+        elements = size;
+    }
 
     if (member_set(HELP, sorts) || sorts == empty_set()) {
         if (sorts == empty_set()) {
@@ -90,74 +83,70 @@ int main(int argc, char **argv) {
         printf("  -s   Print verbose statistics.\n");
         printf("  -h   Display program synopsis and usage.\n");
     }
-    uint32_t print_counter = 0;
-    uint32_t array_index = 0;
     if (member_set(HEAP, sorts)) {
         heap_sort(&stats, A, size);
-        printf("Heap Sort, %u elements, %lu moves, %lu compares\n", elements, stats.moves,
-            stats.compares);
-        while (print_counter < elements) {
-            if (array_index < size) {
-                if (array_index != 0 && array_index % 5 == 0) {
-                    printf("\n");
-                }
-                printf("%13" PRIu32, A[array_index]);
-                array_index++;
-                print_counter++;
+        printf(
+            "Heap Sort, %u elements, %lu moves, %lu compares", size, stats.moves, stats.compares);
+        for (uint32_t index = 0; index < elements; index++) {
+            if (index % 5 == 0) {
+                printf("\n");
             }
+            printf("%13" PRIu32, A[index]);
         }
         printf("\n");
+        reset(&stats);
+        for (uint32_t array_index = 0; array_index < size; array_index++) {
+            A[array_index] = B[array_index];
+        }
     }
-    array_index = 0;
     if (member_set(SHELL, sorts)) {
         shell_sort(&stats, A, size);
-        printf("Shell Sort, %u elements, %lu moves, %lu compares\n", elements, stats.moves,
-            stats.compares);
-        while (print_counter < elements) {
-            if (array_index < size) {
-                if (array_index != 0 && array_index % 5 == 0) {
-                    printf("\n");
-                }
-                printf("%13" PRIu32, A[array_index]);
-                array_index++;
-                print_counter++;
+        printf(
+            "Shell Sort, %u elements, %lu moves, %lu compares", size, stats.moves, stats.compares);
+        for (uint32_t index = 0; index < elements; index++) {
+            if (index % 5 == 0) {
+                printf("\n");
             }
+            printf("%13" PRIu32, A[index]);
         }
         printf("\n");
+        reset(&stats);
+        for (uint32_t array_index = 0; array_index < size; array_index++) {
+            A[array_index] = B[array_index];
+        }
     }
-    array_index = 0;
     if (member_set(INSERTION, sorts)) {
         insertion_sort(&stats, A, size);
-        printf("Insertion Sort, %u elements, %lu moves, %lu compares\n", elements, stats.moves,
+        printf("Insertion Sort, %u elements, %lu moves, %lu compares", size, stats.moves,
             stats.compares);
-        while (print_counter < elements) {
-            if (array_index < size) {
-                if (array_index != 0 && array_index % 5 == 0) {
-                    printf("\n");
-                }
-                printf("%13" PRIu32, A[array_index]);
-                array_index++;
-                print_counter++;
+        for (uint32_t index = 0; index < elements; index++) {
+            if (index % 5 == 0) {
+                printf("\n");
             }
+            printf("%13" PRIu32, A[index]);
         }
         printf("\n");
+        reset(&stats);
+        for (uint32_t array_index = 0; array_index < size; array_index++) {
+            A[array_index] = B[array_index];
+        }
     }
-    array_index = 0;
     if (member_set(QUICK, sorts)) {
         quick_sort(&stats, A, size);
-        printf("Quick Sort, %u elements, %lu moves, %lu compares\n", elements, stats.moves,
-            stats.compares);
-        while (print_counter < elements) {
-            if (array_index < size) {
-                if (array_index != 0 && array_index % 5 == 0) {
-                    printf("\n");
-                }
-                printf("%13" PRIu32, A[array_index]);
-                array_index++;
-                print_counter++;
+        printf(
+            "Quick Sort, %u elements, %lu moves, %lu compares", size, stats.moves, stats.compares);
+        for (uint32_t index = 0; index < elements; index++) {
+            if (index % 5 == 0) {
+                printf("\n");
             }
+            printf("%13" PRIu32, A[index]);
         }
         printf("\n");
+        reset(&stats);
+        for (uint32_t array_index = 0; array_index < size; array_index++) {
+            A[array_index] = B[array_index];
+        }
     }
     free(A);
+    free(B);
 }
