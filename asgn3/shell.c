@@ -8,11 +8,11 @@
 uint32_t gaps(uint32_t n) {
     static uint32_t value = 0;
     if (value <= 0) {
-        value = log(2 * n + 3) / log(3);
+        value = (uint32_t)(log(2 * n + 3) / log(3));
     } else {
         value--;
     }
-    return (uint32_t)((pow(3, value) - 1) / 2);
+    return (uint32_t) floor((pow(3, value) - 1) / 2);
 }
 
 void shell_sort(Stats *stats, uint32_t *A, uint32_t n) {
