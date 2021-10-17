@@ -73,11 +73,11 @@ int main(int argc, char **argv) {
         printf("USAGE\n");
         printf("   $ ./sorting [-aeisqr:n:p:h] [-n length] [-p elements] [-r seed]\n\n");
         printf("OPTIONS\n");
-	printf("  -h   Display program help and usage.\n");
+        printf("  -h   Display program help and usage.\n");
         printf("  -a   Enable all sorts.\n");
         printf("  -e   Enable Heap Sort.\n");
         printf("  -i   Enable Insertion Sort.\n");
-	printf("  -s   Enable Shell Sort.\n");
+        printf("  -s   Enable Shell Sort.\n");
         printf("  -q   Enable Quick Sort.\n");
         printf("  -n   Specify number of array elements (Default: 100).\n");
         printf("  -p   Specify number of elements to print (Default: 100).\n");
