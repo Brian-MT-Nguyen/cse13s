@@ -69,19 +69,19 @@ int main(int argc, char **argv) {
             printf("Select at least one sort to perform.\n");
         }
         printf("SYNOPSIS\n");
-        printf("   A test harness for the small numerical library.\n\n");
+        printf("   A collection of comparison-based sorting algorithms.\n\n");
         printf("USAGE\n");
         printf("   $ ./sorting [-aeisqr:n:p:h] [-n length] [-p elements] [-r seed]\n\n");
         printf("OPTIONS\n");
-        printf("  -a   Runs all sorts.\n");
-        printf("  -e   Runs e pi test.\n");
-        printf("  -b   Runs BBP pi test.\n");
-        printf("  -m   Runs Madhava pi test.\n");
-        printf("  -r   Runs Euler pi test.\n");
-        printf("  -v   Runs Viete pi test.\n");
-        printf("  -n   Runs Newton square root tests.\n");
-        printf("  -s   Print verbose statistics.\n");
-        printf("  -h   Display program synopsis and usage.\n");
+	printf("  -h   Display program help and usage.\n");
+        printf("  -a   Enable all sorts.\n");
+        printf("  -e   Enable Heap Sort.\n");
+        printf("  -i   Enable Insertion Sort.\n");
+	printf("  -s   Enable Shell Sort.\n");
+        printf("  -q   Enable Quick Sort.\n");
+        printf("  -n   Specify number of array elements (Default: 100).\n");
+        printf("  -p   Specify number of elements to print (Default: 100).\n");
+        printf("  -r   Specify random seed (Default: 13371453).\n");
     }
     if (member_set(HEAP, sorts)) {
         heap_sort(&stats, A, size);
