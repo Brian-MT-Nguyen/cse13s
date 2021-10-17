@@ -17,7 +17,8 @@ uint32_t gaps(uint32_t n) {
 
 void shell_sort(Stats *stats, uint32_t *A, uint32_t n) {
     uint32_t max_gap = log(2 * n + 3) / log(3);
-    for (uint32_t gap = 0; gap < max_gap; gap++) {
+    for (uint32_t gap_changer = 0; gap_changer < max_gap; gap_changer++) {
+        uint32_t gap = gaps(n);
         for (uint32_t index = gap; index < n; index++) {
             uint32_t compare_index = index;
             uint32_t temp = move(stats, A[index]);
