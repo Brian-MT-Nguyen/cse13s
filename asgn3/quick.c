@@ -7,7 +7,7 @@
 uint32_t partition(Stats *stats, uint32_t *A, uint32_t lo, uint32_t hi) {
     uint32_t i = lo - 1;
     for (uint32_t j = lo; j < hi; j++) {
-        if (cmp(stats, A[j - 1], A[i - 1]) == -1) {
+        if (cmp(stats, A[j - 1], A[hi - 1]) == -1) {
             i += 1;
             swap(stats, &A[i - 1], &A[j - 1]);
         }
