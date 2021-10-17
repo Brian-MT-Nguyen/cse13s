@@ -5,8 +5,8 @@
 #include <math.h>
 #include <stdio.h>
 
+static uint32_t value = 0;
 uint32_t gaps(uint32_t n) {
-    static uint32_t value = 0;
     if (value <= 0) {
         value = log(2 * n + 3) / log(3);
     } else {
@@ -29,4 +29,5 @@ void shell_sort(Stats *stats, uint32_t *A, uint32_t n) {
             A[compare_index] = move(stats, temp);
         }
     }
+    value = 0;
 }
