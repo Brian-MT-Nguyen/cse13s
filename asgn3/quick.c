@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 uint32_t partition(Stats *stats, uint32_t *A, uint32_t lo, uint32_t hi) {
-    uint32_t lo_pointer  = lo - 1;
+    uint32_t lo_pointer = lo - 1;
     for (uint32_t hi_pointer = lo; hi_pointer < hi; hi_pointer++) {
         if (cmp(stats, A[hi_pointer - 1], A[hi - 1]) == -1) {
             lo_pointer += 1;
