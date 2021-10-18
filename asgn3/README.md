@@ -4,7 +4,7 @@
 This contains a collection of programs that all contain implemented sorting functions that sort a n-element array of randomly generated 30-bit unsigned integers. They print out the sorted array when prompted as well as its statistics on its moves and compares.
 
 ## How to Build
-1. Must have all 4 math functions (insert.c, heap.c, quick.c, sort.c) [along with its header files], the stats function (stats.c) [along with its header file], and the main test function sorting.c in the same directory and folder as well as "Makefile" in order to construct and compile the program via clang with ease.
+1. Must have all 4 sorting functions (1insert.c, heap.c, quick.c, sort.c) [along with its header files], the stats function (stats.c) [along with its header file], and the main test function sorting.c in the same directory and folder as well as "Makefile" in order to construct and compile the program via clang with ease.
 2. With these files in the same folder, one must construct and compile the library to run it with:
 ```
 $ make
