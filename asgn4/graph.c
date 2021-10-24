@@ -2,6 +2,7 @@
 
 #include "vertices.h"
 
+#include <inttypes.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,7 +32,7 @@ uint32_t graph_vertices(Graph *G) {
 }
 
 bool graph_add_edge(Graph *G, uint32_t i, uint32_t j, uint32_t k) {
-    if ((i >= 0 && i < G->vertices) && (j >= 0 && j < G->vertices)) {
+    if ((i > 0 && i < G->vertices) && (j > 0 && j < G->vertices)) {
         G->matrix[i][j] = k;
         if (G->undirected) {
             G->matrix[j][i] = k;
@@ -42,15 +43,19 @@ bool graph_add_edge(Graph *G, uint32_t i, uint32_t j, uint32_t k) {
 }
 
 bool graph_has_edge(Graph *G, uint32_t i, uint32_t j) {
-    if (G->matrix[i][j] > 0) {
-        return true;
+    if ((i >= 0 && i < G->vertices) && (j >= 0 && j < G->vertices)) {
+        if (G->matrix[i][j] > 0) {
+            return true;
+        }
     }
     return false;
 }
 
 uint32_t graph_edge_weight(Graph *G, uint32_t i, uint32_t j) {
-    if (graph_has_edge(G, i, j)) {
-        return G->matrix[i][j];
+    if ((i >= 0 && i < G->vertices) && (j >= 0 && j < G->vertices)) {
+        if (G->matrix[i][j] > 0) {
+            return G->matrix[i][j];
+        }
     }
     return 0;
 }
@@ -60,13 +65,21 @@ bool graph_visited(Graph *G, uint32_t v) {
 }
 
 void graph_mark_visited(Graph *G, uint32_t v) {
-    if (v > 0 && v < VERTICES) {
+    if (v > 0 && v < G->vertices) {
         G->visited[v] = true;
     }
 }
 
 void graph_mark_unvisited(Graph *G, uint32_t v) {
-    if (v > 0 && v < VERTICES) {
+    if (v > 0 && v < G->vertices) {
         G->visited[v] = false;
+    }
+}
+
+void graph_print(Graph *G) {
+    for (uint32_t i = 0; i < G->vertices; i += 1) {
+        for (uint32_t j = 0; j < G->vertices; j += 1) {
+            printf("%13" PRIu32, G->matrix[i][j]);
+        }
     }
 }
