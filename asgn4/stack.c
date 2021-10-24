@@ -70,7 +70,7 @@ bool stack_pop(Stack *s, uint32_t *x) {
 }
 
 bool stack_peek(Stack *s, uint32_t *x) {
-    if (stack_empty(s)) {
+    if (stack_empty(s) == false) {
         *x = s->items[s->top];
         return true;
     }
