@@ -18,17 +18,12 @@ void dfs(Graph *G, uint32_t v, Path *curr, Path *shortest, char *cities[], FILE 
     graph_mark_visited(G, v);
     path_push_vertex(curr, v, G);
     uint32_t vertex_store = 0;
-    printf("1");
     for (uint32_t i = 0; i < graph_vertices(G); i++) {
-        printf("2");
         if (graph_has_edge(G, v, i) == true) {
-            printf("3");
             if (graph_visited(G, i) == false) {
-                printf("4");
                 path_print(curr, outfile, cities);
                 dfs(G, i, curr, shortest, cities, outfile, run_verbose);
             } else if ((i == START_VERTEX) && (path_vertices(curr) == graph_vertices(G))) {
-                printf("5");
                 path_push_vertex(curr, i, G);
                 if (path_length(shortest) == 0 || (path_length(shortest) > path_length(curr))) {
                     path_copy(shortest, curr);
@@ -99,9 +94,9 @@ int main(int argc, char **argv) {
         return 0;
     }
 
-    while (NULL != fgets(input_graph, 1024, infile)) {
-        sscanf(input_graph, "%u %u %u", &i, &j, &weight);
-        graph_has_edge(G, i, j);
+    while (fscanf(infile, "%d %d %d", &i, &j, &weight) != EOF) {
+        graph_add_edge(G, i, j, weight);
+        printf("%d %d %d %d\n", i, j, weight, graph_edge_weight(G, i, j));
     }
 
     Path *current = path_create();
