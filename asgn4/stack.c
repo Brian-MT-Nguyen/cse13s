@@ -93,4 +93,3 @@ void stack_print(Stack *s, FILE *outfile, char *cities[]) {
     }
     fprintf(outfile, "\n");
 }
-
