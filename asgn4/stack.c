@@ -62,8 +62,8 @@ bool stack_push(Stack *s, uint32_t x) {
 
 bool stack_pop(Stack *s, uint32_t *x) {
     if (stack_empty(s) == false) {
-        s->top -= 1;
         *x = s->items[s->top];
+        s->top -= 1;
         return true;
     }
     return false;
@@ -93,3 +93,4 @@ void stack_print(Stack *s, FILE *outfile, char *cities[]) {
     }
     fprintf(outfile, "\n");
 }
+
