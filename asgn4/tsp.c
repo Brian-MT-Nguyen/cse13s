@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
         sscanf(input_graph, "%u %u %u", &i, &j, &weight);
         graph_has_edge(G, i, j);
     }
-
+    free(G);
     //Path *current;
     //Path *shortest;
 }
