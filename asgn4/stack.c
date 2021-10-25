@@ -78,9 +78,12 @@ bool stack_peek(Stack *s, uint32_t *x) {
 }
 
 void stack_copy(Stack *dst, Stack *src) {
+    free(dst->items);
+    dst->items = (uint32_t *) calloc(src->capacity, sizeof(uint32_t));
     for (uint32_t i = 0; i < src->capacity; i++) {
         dst->items[i] = src->items[i];
     }
+    dst->capacity = src->capacity;
     dst->top = src->top;
 }
 
