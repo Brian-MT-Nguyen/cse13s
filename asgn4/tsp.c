@@ -11,8 +11,38 @@
 #include <unistd.h>
 
 #define OPTIONS "hvui:o:"
-
-void dfs(Graph *G, uint32_t v, Path *curr, Path *shortest, char *cities[], FILE *outfile);
+static uint32_t r_counter = 0;
+void dfs(Graph *G, uint32_t v, Path *curr, Path *shortest, char *cities[], FILE *outfile,
+    bool *run_verbose) {
+    r_counter++;
+    graph_mark_visited(G, v);
+    path_push_vertex(curr, v, G);
+    uint32_t vertex_store = 0;
+    printf("1");
+    for (uint32_t i = 0; i < graph_vertices(G); i++) {
+        printf("2");
+        if (graph_has_edge(G, v, i) == true) {
+            printf("3");
+            if (graph_visited(G, i) == false) {
+                printf("4");
+                path_print(curr, outfile, cities);
+                dfs(G, i, curr, shortest, cities, outfile, run_verbose);
+            } else if ((i == START_VERTEX) && (path_vertices(curr) == graph_vertices(G))) {
+                printf("5");
+                path_push_vertex(curr, i, G);
+                if (path_length(shortest) == 0 || (path_length(shortest) > path_length(curr))) {
+                    path_copy(shortest, curr);
+                    if (run_verbose) {
+                        path_print(curr, outfile, cities);
+                    }
+                }
+                path_pop_vertex(curr, &vertex_store, G);
+            }
+        }
+    }
+    path_pop_vertex(curr, &vertex_store, G);
+    graph_mark_unvisited(G, v);
+}
 
 int main(int argc, char **argv) {
     FILE *infile = stdin;
@@ -55,12 +85,11 @@ int main(int argc, char **argv) {
     uint32_t total_vertices = 0;
     scanf("%d", &total_vertices);
 
-    char *cities[1024];
+    char **cities = (char **) calloc(total_vertices, sizeof(char *));
     char input_graph[1024];
     for (uint32_t index = 0; index <= total_vertices; index++) {
         fgets(input_graph, 1024, infile);
         input_graph[strlen(input_graph) - 1] = '\0';
-        cities[index] = strdup(input_graph);
     }
 
     Graph *G = graph_create(total_vertices, undirected);
@@ -74,7 +103,17 @@ int main(int argc, char **argv) {
         sscanf(input_graph, "%u %u %u", &i, &j, &weight);
         graph_has_edge(G, i, j);
     }
-    free(G);
-    //Path *current;
-    //Path *shortest;
+
+    Path *current = path_create();
+    Path *shortest = path_create();
+    dfs(G, START_VERTEX, current, shortest, cities, outfile, &run_verbose);
+
+    if (path_length(shortest) > 0) {
+        path_print(shortest, outfile, cities);
+        printf("%d", r_counter);
+    }
+    graph_delete(&G);
+    path_delete(&current);
+    path_delete(&shortest);
+    free(cities);
 }
