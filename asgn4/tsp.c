@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
     if (G == NULL) {
         fprintf(stderr, "Error creating graph.");
         graph_delete(&G);
-        return 1;
+	return 0;
     }
 
     while (NULL != fgets(input_graph, 1024, infile)) {
