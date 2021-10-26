@@ -13,8 +13,8 @@
 #define OPTIONS "hvui:o:"
 
 static uint32_t r_counter = 0;
-void dfs(Graph *G, uint32_t v, Path *curr, Path *shortest, char *cities[], FILE *outfile,
-    bool *run_verbose) {
+void dfs(
+    Graph *G, uint32_t v, Path *curr, Path *shortest, char *cities[], FILE *outfile, bool verbose) {
     r_counter++;
     graph_mark_visited(G, v);
     path_push_vertex(curr, v, G);
@@ -22,16 +22,16 @@ void dfs(Graph *G, uint32_t v, Path *curr, Path *shortest, char *cities[], FILE 
     for (uint32_t i = 0; i < graph_vertices(G); i++) {
         if (graph_has_edge(G, v, i) == true) {
             if (graph_visited(G, i) == false) {
-                dfs(G, i, curr, shortest, cities, outfile, run_verbose);
+                dfs(G, i, curr, shortest, cities, outfile, verbose);
             } else if ((i == START_VERTEX) && (path_vertices(curr) == graph_vertices(G))) {
                 path_push_vertex(curr, i, G);
                 if (path_length(shortest) == 0 || (path_length(shortest) > path_length(curr))) {
                     path_copy(shortest, curr);
-                    if (run_verbose) {
-                        path_print(curr, outfile, cities);
-                    }
                 }
-		path_pop_vertex(curr, &vertex_store, G);
+                if (verbose) {
+                    path_print(curr, outfile, cities);
+                }
+                path_pop_vertex(curr, &vertex_store, G);
             }
         }
     }
@@ -124,13 +124,13 @@ int main(int argc, char **argv) {
     Path *shortest = path_create();
 
     //Calling dfs to search for path
-    dfs(G, START_VERTEX, current, shortest, cities, outfile, &run_verbose);
+    dfs(G, START_VERTEX, current, shortest, cities, outfile, run_verbose);
 
     //print out path
     if (path_length(shortest) > 0) {
         path_print(shortest, outfile, cities);
         fprintf(outfile, "Total recursive calls: %d\n", r_counter);
-	r_counter = 0;
+        r_counter = 0;
     }
 
     //free memory
