@@ -12,7 +12,7 @@
 
 #define OPTIONS "hvui:o:"
 
-//Performs Def-First Search Algorithm based on asgn pseudocode
+//Performs Depth-First Search Algorithm based on asgn pseudocode
 //
 //G: The graph that stores edges and weights of the path
 //curr: The current path being traversed
