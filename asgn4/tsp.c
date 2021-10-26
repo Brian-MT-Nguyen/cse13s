@@ -31,6 +31,7 @@ void dfs(Graph *G, uint32_t v, Path *curr, Path *shortest, char *cities[], FILE 
                         path_print(curr, outfile, cities);
                     }
                 }
+		path_pop_vertex(curr, &vertex_store, G);
             }
         }
     }
@@ -129,6 +130,7 @@ int main(int argc, char **argv) {
     if (path_length(shortest) > 0) {
         path_print(shortest, outfile, cities);
         fprintf(outfile, "Total recursive calls: %d\n", r_counter);
+	r_counter = 0;
     }
 
     //free memory
