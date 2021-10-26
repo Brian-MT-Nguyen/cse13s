@@ -12,6 +12,14 @@
 
 #define OPTIONS "hvui:o:"
 
+//Performs Def-First Search Algorithm based on asgn pseudocode
+//
+//G: The graph that stores edges and weights of the path
+//curr: The current path being traversed
+//shortest: The known shortest path so far
+//cities: contains the cities that comprise the path
+//outfile: The file to print the output to.
+//verbose: holds wether the verbose flag has been used to print the paths as it goes
 static uint32_t r_counter = 0;
 void dfs(
     Graph *G, uint32_t v, Path *curr, Path *shortest, char *cities[], FILE *outfile, bool verbose) {
@@ -40,14 +48,16 @@ void dfs(
 }
 
 int main(int argc, char **argv) {
+    //Intializes input and output files that will be grabbed for program
     FILE *infile = stdin;
     FILE *outfile = stdout;
 
+    //Initialize variables used to parse through command line
     int opt = 0;
     bool run_verbose = false;
     bool undirected = false;
     bool help = false;
-
+    //Parses through command line input options
     while ((opt = getopt(argc, argv, OPTIONS)) != -1) {
         switch (opt) {
         case 'v': run_verbose = true; break;
@@ -58,6 +68,7 @@ int main(int argc, char **argv) {
         }
     }
 
+    //Prints help message if prompted
     if (help) {
         printf("SYNOPSIS\n");
         printf("  Traveling Salesman Problem using DFS.\n");
@@ -137,7 +148,6 @@ int main(int argc, char **argv) {
     }
 
     //free memory
-
     for (uint32_t i = 0; i < total_vertices; i++) {
         free(cities[i]);
     }
