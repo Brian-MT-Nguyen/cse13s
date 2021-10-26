@@ -113,6 +113,9 @@ int main(int argc, char **argv) {
         //Prints error if input does not fit format
         else {
             fprintf(stderr, "Error: Edge input is malformed.");
+            for (uint32_t i = 0; i < total_vertices; i++) {
+                free(cities[i]);
+            }
             free(cities);
             graph_delete(&G);
             return -1;
@@ -134,6 +137,10 @@ int main(int argc, char **argv) {
     }
 
     //free memory
+
+    for (uint32_t i = 0; i < total_vertices; i++) {
+        free(cities[i]);
+    }
     graph_delete(&G);
     path_delete(&current);
     path_delete(&shortest);
