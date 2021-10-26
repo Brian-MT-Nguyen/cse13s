@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-//Contains the definitions needed for a Graph to work (makes an adjacency matrix)
+//Variables that contains the definitions or structure needed for a Graph to work (makes an adjacency matrix)
 struct Graph {
     uint32_t vertices;
     bool undirected;
@@ -14,7 +14,7 @@ struct Graph {
     uint32_t matrix[VERTICES][VERTICES];
 };
 
-//Makes a graph array and puts the definitions in it
+//Dynamically allocates memory and creates a graph array
 //Returns the Graph array when made
 //
 //vertices: contains the amount of vertices that make up the graph
@@ -42,7 +42,7 @@ uint32_t graph_vertices(Graph *G) {
     return G->vertices;
 }
 
-//Adds an edge to the graph given the vertices coordinates and the weight of the edge
+//Adds an edge to the graph given the vertices coordinates and the weight of the edge if within bounds
 //Returns true if the edge was successfully added
 //Returns false if the edge was not able to be added
 //
@@ -61,7 +61,7 @@ bool graph_add_edge(Graph *G, uint32_t i, uint32_t j, uint32_t k) {
     return false;
 }
 
-//Shows whether there is an edge at the given vertex
+//Shows whether there is an edge at the given vertex if within bounds
 //Returns true if there is an edge
 //Returns false if there is not an edge
 //
@@ -77,7 +77,7 @@ bool graph_has_edge(Graph *G, uint32_t i, uint32_t j) {
     return false;
 }
 
-//Gives the weight of the edge if there exists an edge there
+//Gives the weight of the edge if there exists an edge there if within bounds
 //Returns the edge weight if there is an edge weight greater than zero
 //Returns zero if there is not an edge or if the weight is zero
 //

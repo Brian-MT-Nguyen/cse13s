@@ -14,7 +14,7 @@ struct Path {
     uint32_t length;
 };
 
-//Dynamically allocates memory to the path of vertices using stack
+//Dynamically allocates memory and creates the path of vertices using stack
 //Returns the path array
 Path *path_create(void) {
     Path *p = (Path *) malloc(sizeof(Path));
@@ -37,7 +37,7 @@ void path_delete(Path **p) {
     return;
 }
 
-//Pushes or addes the vertex onto the path array and adds to path length based on vertex edge weight
+//Pushes or adds the vertex onto the path array and adds to path length based on vertex edge weight
 //Returns true if vertex was pushed
 //Returns false if vertex could not be pushed
 //
