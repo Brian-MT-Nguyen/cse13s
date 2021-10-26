@@ -82,8 +82,8 @@ int main(int argc, char **argv) {
     int input_vertices = fscanf(infile, "%d\n", &total_vertices);
     //Error Msg for Invalid Vertices
     if (total_vertices > VERTICES || input_vertices != 1) {
-    	fprintf(stderr, "Error: Invalid number of vertices");
-	return -1;
+        fprintf(stderr, "Error: Invalid number of vertices");
+        return -1;
     }
 
     //Make array to store cities from input file
@@ -93,8 +93,8 @@ int main(int argc, char **argv) {
     char input[1024];
 
     //scans through the first vertices number of input file and stores to cities array
-    for(uint32_t i = 0; i < total_vertices; i++) {
-    	fgets(input, 1024, infile);
+    for (uint32_t i = 0; i < total_vertices; i++) {
+        fgets(input, 1024, infile);
         //removes newline character from fgets
         input[strlen(input) - 1] = '\0';
         cities[i] = strdup(input);
@@ -102,30 +102,36 @@ int main(int argc, char **argv) {
 
     Graph *G = graph_create(total_vertices, undirected);
     //Initialize variable to get the edge input to add to the graph
-    int input_triples; 
+    int input_triples;
 
     //scans through all lines that contain the three integer format and adds edges to graph
-    while((input_triples = fscanf(infile, "%d %d %d", &i, &j, &weight)) != EOF) {
-    	if(input_triples == 3) {
-		graph_add_edge(G, i, j, weight);
-	}
-	//Prints error if input does not fit format
-	else {
-		fprintf(stderr, "Error: Edge input is malformed.");
-		free(cities);
-		graph_delete(&G);
-		return -1;
-	}
+    while ((input_triples = fscanf(infile, "%d %d %d", &i, &j, &weight)) != EOF) {
+        if (input_triples == 3) {
+            graph_add_edge(G, i, j, weight);
+        }
+        //Prints error if input does not fit format
+        else {
+            fprintf(stderr, "Error: Edge input is malformed.");
+            free(cities);
+            graph_delete(&G);
+            return -1;
+        }
     }
 
+    //Creating Paths
     Path *current = path_create();
     Path *shortest = path_create();
+
+    //Calling dfs to search for path
     dfs(G, START_VERTEX, current, shortest, cities, outfile, &run_verbose);
 
+    //print out path
     if (path_length(shortest) > 0) {
         path_print(shortest, outfile, cities);
-        fprintf(outfile,"Total recursive calls: %d\n", r_counter);
+        fprintf(outfile, "Total recursive calls: %d\n", r_counter);
     }
+
+    //free memory
     graph_delete(&G);
     path_delete(&current);
     path_delete(&shortest);
