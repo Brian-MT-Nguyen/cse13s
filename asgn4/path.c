@@ -65,6 +65,6 @@ void path_copy(Path *dst, Path *src) {
 }
 
 void path_print(Path *p, FILE *outfile, char *cities[]) {
-    fprintf(outfile, "Path length: %d\n Path:", p->length);
+    fprintf(outfile, "Path length: %d\nPath: ", p->length);
     stack_print(p->vertices, outfile, cities);
 }

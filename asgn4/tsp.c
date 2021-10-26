@@ -11,6 +11,7 @@
 #include <unistd.h>
 
 #define OPTIONS "hvui:o:"
+
 static uint32_t r_counter = 0;
 void dfs(Graph *G, uint32_t v, Path *curr, Path *shortest, char *cities[], FILE *outfile,
     bool *run_verbose) {
@@ -21,7 +22,6 @@ void dfs(Graph *G, uint32_t v, Path *curr, Path *shortest, char *cities[], FILE 
     for (uint32_t i = 0; i < graph_vertices(G); i++) {
         if (graph_has_edge(G, v, i) == true) {
             if (graph_visited(G, i) == false) {
-                path_print(curr, outfile, cities);
                 dfs(G, i, curr, shortest, cities, outfile, run_verbose);
             } else if ((i == START_VERTEX) && (path_vertices(curr) == graph_vertices(G))) {
                 path_push_vertex(curr, i, G);
@@ -31,7 +31,6 @@ void dfs(Graph *G, uint32_t v, Path *curr, Path *shortest, char *cities[], FILE 
                         path_print(curr, outfile, cities);
                     }
                 }
-                path_pop_vertex(curr, &vertex_store, G);
             }
         }
     }
@@ -73,30 +72,50 @@ int main(int argc, char **argv) {
         printf("  -o outfile     Output of computed path (default: stdout)\n");
     }
 
+    //Initializes variables to store input from input file (infile)
     uint32_t i = 0;
     uint32_t j = 0;
     uint32_t weight = 0;
-
     uint32_t total_vertices = 0;
-    scanf("%d", &total_vertices);
 
+    //Grabs total number of vertices from input file
+    int input_vertices = fscanf(infile, "%d\n", &total_vertices);
+    //Error Msg for Invalid Vertices
+    if (total_vertices > VERTICES || input_vertices != 1) {
+    	fprintf(stderr, "Error: Invalid number of vertices");
+	return -1;
+    }
+
+    //Make array to store cities from input file
     char **cities = (char **) calloc(total_vertices, sizeof(char *));
-    char input_graph[1024];
-    for (uint32_t index = 0; index <= total_vertices; index++) {
-        fgets(input_graph, 1024, infile);
-        input_graph[strlen(input_graph) - 1] = '\0';
+
+    //Intialize variable that reads from input file
+    char input[1024];
+
+    //scans through the first vertices number of input file and stores to cities array
+    for(uint32_t i = 0; i < total_vertices; i++) {
+    	fgets(input, 1024, infile);
+        //removes newline character from fgets
+        input[strlen(input) - 1] = '\0';
+        cities[i] = strdup(input);
     }
 
     Graph *G = graph_create(total_vertices, undirected);
-    if (G == NULL) {
-        fprintf(stderr, "Error creating graph.");
-        graph_delete(&G);
-        return 0;
-    }
+    //Initialize variable to get the edge input to add to the graph
+    int input_triples; 
 
-    while (fscanf(infile, "%d %d %d", &i, &j, &weight) != EOF) {
-        graph_add_edge(G, i, j, weight);
-        printf("%d %d %d %d\n", i, j, weight, graph_edge_weight(G, i, j));
+    //scans through all lines that contain the three integer format and adds edges to graph
+    while((input_triples = fscanf(infile, "%d %d %d", &i, &j, &weight)) != EOF) {
+    	if(input_triples == 3) {
+		graph_add_edge(G, i, j, weight);
+	}
+	//Prints error if input does not fit format
+	else {
+		fprintf(stderr, "Error: Edge input is malformed.");
+		free(cities);
+		graph_delete(&G);
+		return -1;
+	}
     }
 
     Path *current = path_create();
@@ -105,10 +124,12 @@ int main(int argc, char **argv) {
 
     if (path_length(shortest) > 0) {
         path_print(shortest, outfile, cities);
-        printf("%d", r_counter);
+        fprintf(outfile,"Total recursive calls: %d\n", r_counter);
     }
     graph_delete(&G);
     path_delete(&current);
     path_delete(&shortest);
     free(cities);
+    fclose(infile);
+    fclose(outfile);
 }
