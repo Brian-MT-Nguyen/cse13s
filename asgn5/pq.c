@@ -67,17 +67,17 @@ bool enqueue(PriorityQueue *q, Node *n) {
     if (q->head < q->capacity) {
         q->items[q->head] = n;
         q->head++;
-	insertion_sort(q);
+        insertion_sort(q);
         return true;
     }
     return false;
 }
 
 bool dequeue(PriorityQueue *q, Node **n) {
-	if(q->head > 0) {
-		q->head -= 1;
-		*n = q->items[q->head];
-		return true;
-	}
-	return false;
+    if (q->head > 0) {
+        q->head -= 1;
+        *n = q->items[q->head];
+        return true;
+    }
+    return false;
 }

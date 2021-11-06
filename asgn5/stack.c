@@ -53,18 +53,18 @@ uint32_t stack_size(Stack *s) {
 
 bool stack_push(Stack *s, Node *n) {
     if (stack_full(s) == false) {
-	s->items[s->top] = n;
-	s->top += 1;
-	return true;
+        s->items[s->top] = n;
+        s->top += 1;
+        return true;
     }
     return false;
 }
 
 bool stack_pop(Stack *s, Node **n) {
-	if(stack_empty(s) == false) {
-		s-> top -= 1;
-		*n = s->items[s->top];
-		return true;
-	}
-	return false;
+    if (stack_empty(s) == false) {
+        s->top -= 1;
+        *n = s->items[s->top];
+        return true;
+    }
+    return false;
 }
