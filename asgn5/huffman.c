@@ -54,11 +54,11 @@ void dump_tree(int outfile, Node *root) {
         if (!root->left && !root->right) {
             buf[0] = 'L';
             buf[1] = root->symbol;
-            write_bytes(outfile, &buf[0], BLOCK);
-            write_bytes(outfile, &buf[1], BLOCK);
+            write_bytes(outfile, &buf[0], 1);
+            write_bytes(outfile, &buf[1], 1);
         } else {
             buf[2] = 'I';
-            write_bytes(outfile, &buf[2], BLOCK);
+            write_bytes(outfile, &buf[2], 1);
         }
     }
 }
