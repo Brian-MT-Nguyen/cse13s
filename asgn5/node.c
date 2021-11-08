@@ -20,7 +20,7 @@ void node_delete(Node **n) {
 }
 
 Node *node_join(Node *left, Node *right) {
-    Node *parent_node = node_create('$', left->frequency + right->frequency);
+    Node *parent_node = node_create('$', (left->frequency + right->frequency));
     parent_node->left = left;
     parent_node->right = right;
     return parent_node;
