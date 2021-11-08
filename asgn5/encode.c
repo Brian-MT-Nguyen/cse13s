@@ -63,16 +63,6 @@ int main(int argc, char **argv) {
     hist[0]++;
     hist[255]++;
 
-    //Makes a temp input file in case infile is not proper
-    if (lseek(infile, 0, SEEK_SET) == -1) {
-        int input_file = open("/tempinfile.temp", O_TRUNC | O_CREAT | O_RDWR, 0600);
-        uint8_t temp_bytes_read = read_bytes(infile, buffer, BLOCK);
-        while (temp_bytes_read > 0) {
-            write_bytes(input_file, buffer, temp_bytes_read);
-        }
-        infile = input_file;
-    }
-
     //Reads through infile and makes appends to histogram
     uint8_t input_bytes_read;
     while ((input_bytes_read = read_bytes(infile, buffer, BLOCK)) > 0) {
