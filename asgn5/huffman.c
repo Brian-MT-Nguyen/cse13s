@@ -12,7 +12,6 @@ Node *build_tree(uint64_t hist[static ALPHABET]) {
     Node *left;
     Node *right;
     Node *parent;
-    Node *root;
     for (uint32_t i = 0; i < ALPHABET; i++) {
         if (hist[i] > 0) {
             n = node_create(i, hist[i]);
@@ -25,9 +24,9 @@ Node *build_tree(uint64_t hist[static ALPHABET]) {
         parent = node_join(left, right);
         enqueue(q, parent);
     }
-    dequeue(q, &root);
+    dequeue(q, &parent);
     pq_delete(&q);
-    return root;
+    return parent;
 }
 
 void build_codes(Node *root, Code table[static ALPHABET]) {
@@ -48,11 +47,11 @@ void build_codes(Node *root, Code table[static ALPHABET]) {
     }
 }
 
+uint8_t buf[MAX_TREE_SIZE];
 void dump_tree(int outfile, Node *root) {
     if (root) {
         dump_tree(outfile, root->left);
         dump_tree(outfile, root->right);
-        uint8_t buf[3];
         int i = 0;
         if (!root->left && !root->right) {
             buf[i++] = 'L';
@@ -71,7 +70,6 @@ Node *rebuild_tree(uint16_t nbytes, uint8_t tree[static nbytes]) {
     Node *left;
     Node *right;
     Node *parent;
-    Node *root;
     Stack *s = stack_create(ALPHABET);
     for (uint16_t i = 0; i < nbytes; i++) {
         if (tree[i] == 'L') {
@@ -86,9 +84,9 @@ Node *rebuild_tree(uint16_t nbytes, uint8_t tree[static nbytes]) {
             stack_push(s, parent);
         }
     }
-    stack_pop(s, &root);
+    stack_pop(s, &parent);
     stack_delete(&s);
-    return root;
+    return parent;
 }
 
 void delete_tree(Node **root) {
