@@ -83,5 +83,3 @@ void flush_codes(int outfile) {
         write_bytes(outfile, shared_buffer, BLOCK);
     }
 }
-
-

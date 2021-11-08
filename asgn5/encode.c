@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
     int infile = STDIN_FILENO;
     int outfile = STDOUT_FILENO;
     bool help = false;
-    
+
     //Parses through command line input options
     while ((opt = getopt(argc, argv, OPTIONS)) != -1) {
         switch (opt) {
@@ -34,6 +34,10 @@ int main(int argc, char **argv) {
         case 'o': outfile = open(optarg, O_WRONLY | O_CREAT | O_TRUNC); break;
         case 'h': help = true; break;
         }
+    }
+
+    if (outfile != STDOUT_FILENO) {
+        close(outfile);
     }
 
     //Prints help message if prompted
@@ -63,21 +67,21 @@ int main(int argc, char **argv) {
     if (lseek(infile, 0, SEEK_SET) == -1) {
         int input_file = open("/tempinfile.temp", O_TRUNC | O_CREAT | O_RDWR, 0600);
         uint8_t temp_bytes_read = read_bytes(infile, buffer, BLOCK);
-	while (temp_bytes_read > 0) {
-                write_bytes(input_file, buffer, temp_bytes_read);
+        while (temp_bytes_read > 0) {
+            write_bytes(input_file, buffer, temp_bytes_read);
         }
         infile = input_file;
     }
 
     //Reads through infile and makes appends to histogram
-    uint8_t input_bytes_read = read_bytes(infile, buffer, BLOCK);
-    while (input_bytes_read > 0) {
-	for(uint8_t i = 0; i < bytes_read; i++) {
-		if(hist[buffer[i]] == 0) {
-			special_symbols += 1;
-		}
-		hist[buffer[i]] += 1;
-	}
+    uint8_t input_bytes_read;
+    while ((input_bytes_read = read_bytes(infile, buffer, BLOCK)) > 0) {
+        for (uint8_t i = 0; i < input_bytes_read; i++) {
+            if (hist[buffer[i]] == 0) {
+                special_symbols += 1;
+            }
+            hist[buffer[i]] += 1;
+        }
     }
 
     //Make Code table
@@ -90,10 +94,10 @@ int main(int argc, char **argv) {
     fstat(infile, &permissions);
     fchmod(outfile, permissions.st_mode);
 
-    Header header = { 0,0,0,0 };
+    Header header = { 0, 0, 0, 0 };
     header.magic = MAGIC;
     header.permissions = permissions.st_mode;
-    header.tree_size = (3*special_symbols - 1);
+    header.tree_size = (3 * special_symbols - 1);
     header.file_size = permissions.st_size;
 
     //Write Header to Outfile
@@ -105,11 +109,11 @@ int main(int argc, char **argv) {
     //Write to outfile from infile
     lseek(infile, 0, SEEK_SET);
 
-    while(read_bytes(infile, buffer, BLOCK) > 0) {
-    	//using same var from reading for histogram
-	for(uint8_t i = 0; i < input_bytes_read; i++) {
-		write_code(outfile, &table[buffer[i]]);
-	}	
+    while ((input_bytes_read = read_bytes(infile, buffer, BLOCK)) > 0) {
+        //using same var from reading for histogram
+        for (uint8_t i = 0; i < input_bytes_read; i++) {
+            write_code(outfile, &table[buffer[i]]);
+        }
     }
 
     //flushing remaining bits
