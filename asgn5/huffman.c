@@ -49,18 +49,21 @@ void build_codes(Node *root, Code table[static ALPHABET]) {
 
 uint8_t buf[MAX_TREE_SIZE];
 void dump_tree(int outfile, Node *root) {
+    int i = 0;
     if (root) {
         dump_tree(outfile, root->left);
         dump_tree(outfile, root->right);
-        int i = 0;
         if (!root->left && !root->right) {
-            buf[i++] = 'L';
+            buf[i] = 'L';
             write_bytes(outfile, &buf[i], 1);
-            buf[i++] = root->symbol;
+            i++;
+            buf[i] = root->symbol;
             write_bytes(outfile, &buf[i], 1);
+            i++;
         } else {
-            buf[i++] = 'I';
+            buf[i] = 'I';
             write_bytes(outfile, &buf[i], 1);
+            i++;
         }
     }
 }

@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
     //Reads through infile and makes appends to histogram
     uint8_t input_bytes_read;
     while ((input_bytes_read = read_bytes(infile, buffer, BLOCK)) > 0) {
-        for (uint8_t i = 0; i < bytes_read; i++) {
+        for (uint8_t i = 0; i < input_bytes_read; i++) {
             if (hist[buffer[i]] == 0) {
                 special_symbols += 1;
             }
@@ -99,7 +99,7 @@ int main(int argc, char **argv) {
     //Write to outfile from infile
     lseek(infile, 0, SEEK_SET);
 
-    while ((read_bytes(infile, buffer, BLOCK)) > 0) {
+    while ((input_bytes_read = read_bytes(infile, buffer, BLOCK)) > 0) {
         //using same var from reading for histogram
         for (uint8_t i = 0; i < input_bytes_read; i++) {
             write_code(outfile, &table[buffer[i]]);
