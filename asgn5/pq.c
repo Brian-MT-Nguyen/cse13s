@@ -75,8 +75,8 @@ bool enqueue(PriorityQueue *q, Node *n) {
 
 bool dequeue(PriorityQueue *q, Node **n) {
     if (q->head > 0) {
-        *n = q->items[q->head];
 	q->head --;
+        *n = q->items[q->head];
         return true;
     }
     return false;
