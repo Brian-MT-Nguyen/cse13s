@@ -1,5 +1,6 @@
 #include "io.h"
 #include "code.h"
+#include "header.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -60,8 +61,8 @@ static uint8_t shared_buffer[BLOCK];
 static int index = 0;
 
 void write_code(int outfile, Code *c) {
-    for (uint32_t i = 0; i < code_size(c); i++) {
-        uint32_t bit = code_get_bit(c, i);
+    for (uint8_t i = 0; i < code_size(c); i++) {
+        uint8_t bit = code_get_bit(c, i);
         if (bit == 1) {
             code_set_bit(c, index);
         }
@@ -82,3 +83,5 @@ void flush_codes(int outfile) {
         write_bytes(outfile, shared_buffer, BLOCK);
     }
 }
+
+

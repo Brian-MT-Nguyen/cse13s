@@ -2,6 +2,8 @@
 #include "pq.h"
 #include "stack.h"
 #include "io.h"
+#include "header.h"
+
 #include <stdio.h>
 
 Node *build_tree(uint64_t hist[static ALPHABET]) {
@@ -51,14 +53,15 @@ void dump_tree(int outfile, Node *root) {
         dump_tree(outfile, root->left);
         dump_tree(outfile, root->right);
         uint8_t buf[3];
+	int i = 0;
         if (!root->left && !root->right) {
-            buf[0] = 'L';
-            buf[1] = root->symbol;
-            write_bytes(outfile, &buf[0], 1);
-            write_bytes(outfile, &buf[1], 1);
+            buf[i++] = 'L';
+	    write_bytes(outfile, &buf[i], 1);
+            buf[i++] = root->symbol;
+            write_bytes(outfile, &buf[i], 1);
         } else {
-            buf[2] = 'I';
-            write_bytes(outfile, &buf[2], 1);
+            buf[i++] = 'I';
+            write_bytes(outfile, &buf[i], 1);
         }
     }
 }
