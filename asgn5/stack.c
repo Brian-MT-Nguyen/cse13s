@@ -63,7 +63,7 @@ bool stack_push(Stack *s, Node *n) {
 bool stack_pop(Stack *s, Node **n) {
     if (stack_empty(s) == false) {
         s->top -= 1;
-        *n = s->items[s->top];
+        *n = s->items[s->top-1];
         return true;
     }
     return false;
