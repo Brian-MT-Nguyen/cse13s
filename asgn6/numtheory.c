@@ -149,7 +149,7 @@ bool is_prime(mpz_t n, uint64_t iters) {
             }
         }
     }
-    mpz_clears(s, r, a, range, y, j, two, conditional_n, conditional_s);
+    mpz_clears(s, r, a, mod_checker, range, y, j, two, conditional_n, conditional_s);
     return true;
 }
 //Generates a number that is bits long, then tests if prime using is_prime
@@ -167,4 +167,16 @@ void make_prime(mpz_t p, uint64_t bits, uint64_t iters) {
             break;
         }
     }
+}
+
+int main(void) {
+	randstate_init(777);
+	mpz_t prime;
+	mpz_init(prime);
+	uint64_t bits = 64;
+	uint64_t iters = 200;
+	make_prime(prime, bits, iters);
+	gmp_printf("Prime Number: %Zd\n", prime);
+	mpz_clear(prime);
+	randstate_clear();
 }
