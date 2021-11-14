@@ -168,15 +168,3 @@ void make_prime(mpz_t p, uint64_t bits, uint64_t iters) {
         }
     }
 }
-
-int main(void) {
-	randstate_init(777);
-	mpz_t prime;
-	mpz_init(prime);
-	uint64_t bits = 64;
-	uint64_t iters = 200;
-	make_prime(prime, bits, iters);
-	gmp_printf("Prime Number: %Zd\n", prime);
-	mpz_clear(prime);
-	randstate_clear();
-}
