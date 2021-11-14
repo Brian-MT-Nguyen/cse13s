@@ -107,6 +107,13 @@ bool is_prime(mpz_t n, uint64_t iters) {
     mpz_inits(s, r);
     mpz_sub_ui(r, n, 1);
 
+    //Initialize modulus checker to see if n is even
+    mpz_t mod_checker;
+    mpz_init(mod_checker);
+    //Check if n is even or two
+    if ((mpz_cmp_ui(n, 2) == 0) || mpz_mod_ui(mod_checker, n, 2) == 0) {
+        return false;
+    }
     //Divides r until r is odd and increments s, satisfying equation from pseudo
     while (mpz_even_p(r) != 0) {
         mpz_fdiv_q_ui(r, r, 2);
@@ -160,8 +167,4 @@ void make_prime(mpz_t p, uint64_t bits, uint64_t iters) {
             break;
         }
     }
-}
-
-int main(void) {
-    printf("Hello World");
 }
