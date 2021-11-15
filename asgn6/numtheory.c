@@ -119,10 +119,11 @@ bool is_prime(mpz_t n, uint64_t iters) {
     mpz_inits(s, r, NULL);
     mpz_sub_ui(r, n, 1);
     uint64_t s_index = 0;
-    //Divides r until r is odd and increments s, satisfying equation from pseudo
+
+    //Shifts r by s bits where s is a zero from low order bits, satisfying equation from pseudo
     while (mpz_even_p(r) != 0) {
-	s_index = mpz_scan0(r, 1);
-	mpz_mul_2exp(r, r, s_index);
+        s_index = mpz_scan0(r, 0) + 1;
+        mpz_fdiv_q_2exp(r, r, s_index);
     }
 
     mpz_set_ui(s, s_index);
