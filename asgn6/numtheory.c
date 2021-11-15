@@ -96,6 +96,7 @@ void pow_mod(mpz_t out, mpz_t base, mpz_t exponent, mpz_t modulus) {
         mpz_mod(changing_base, changing_base, modulus);
         mpz_fdiv_q_ui(changing_exponent, changing_exponent, 2);
     }
+    mpz_set(out, changing_out);
     mpz_clears(changing_base, changing_exponent, NULL);
 }
 //Tests if a number is prime via the Miller-Rabin Algorithm
