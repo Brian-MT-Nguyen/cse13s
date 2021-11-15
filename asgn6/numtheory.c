@@ -113,20 +113,20 @@ bool is_prime(mpz_t n, uint64_t iters) {
         //Else its not prime
         return false;
     }
+    if (mpz_cmp_ui(n, 3) == 0) {
+        return true;
+    }
 
     //Initialize s and r from n
     mpz_t s, r;
     mpz_inits(s, r, NULL);
     mpz_sub_ui(r, n, 1);
-    uint64_t s_index = 0;
 
-    //Shifts r by s bits where s is a zero from low order bits, satisfying equation from pseudo
+    //Divides r until r is odd and increments s, satisfying equation from pseudo
     while (mpz_even_p(r) != 0) {
-        s_index = mpz_scan0(r, 0) + 1;
-        mpz_fdiv_q_2exp(r, r, s_index);
+        mpz_fdiv_q_ui(r, r, 2);
+        mpz_add_ui(s, s, 1);
     }
-
-    mpz_set_ui(s, s_index);
 
     //Initialize variables that generates random a in range two to n-two
     mpz_t range, a;
@@ -139,7 +139,7 @@ bool is_prime(mpz_t n, uint64_t iters) {
     mpz_sub_ui(conditional_n, n, 1);
     mpz_sub_ui(conditional_s, s, 1);
     mpz_set_ui(two, 2);
-    for (uint64_t i = 1; i <= iters; i++) {
+    for (uint64_t i = 1; i < iters; i++) {
         mpz_urandomm(a, state, range);
         mpz_add_ui(a, a, 2);
         pow_mod(y, a, r, n);
