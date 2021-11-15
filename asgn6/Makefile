@@ -1,4 +1,4 @@
-EXEC = numtheory randstate
+EXEC = numtheory randstate rsa
 SOURCES = $(wildcard *.c)
 OBJECTS = $(SOURCES:%.c=%.o)
 

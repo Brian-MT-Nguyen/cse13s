@@ -1,22 +1,25 @@
 #include "numtheory.h"
 #include "randstate.h"
-#include <gmp.h>
 
 //Finds the greatest common divisor between a and b
 //
-//d: the divisor
+//d: the output (common divisor)
 //a: the first integer
 //b: the second integer
 void gcd(mpz_t d, mpz_t a, mpz_t b) {
-    mpz_t temp;
-    mpz_init(temp);
-    while (mpz_sgn(b) != 0) {
-        mpz_set(temp, b);
-        mpz_mod(b, a, b);
-        mpz_set(a, temp);
+    //Initialize temp + auxilary vars to prevent inputs from changing
+    mpz_t temp, changing_b, changing_a;
+    mpz_inits(temp, changing_b, changing_a, NULL);
+    mpz_set(changing_b, b);
+    mpz_set(changing_a, a);
+
+    while (mpz_sgn(changing_b) != 0) {
+        mpz_set(temp, changing_b);
+        mpz_mod(changing_b, changing_a, changing_b);
+        mpz_set(changing_a, temp);
     }
-    mpz_set(d, a);
-    mpz_clear(temp);
+    mpz_set(d, changing_a);
+    mpz_clears(temp, changing_b, changing_a, NULL);
 }
 
 //Finds the modular multiplicative inverse of n using a and stores in i
@@ -164,18 +167,14 @@ bool is_prime(mpz_t n, uint64_t iters) {
     return true;
 }
 //Generates a number that is bits long, then tests if prime using is_prime
+//Keeps generating until both conditions are satisfied
 //
 //p: the stored prime number
 //bits: value of how large the number must be bit wise
 //iters: the amount of iterations to test if a number is prime
 void make_prime(mpz_t p, uint64_t bits, uint64_t iters) {
-    //Make sure p isn't prime to generate new one
     mpz_urandomb(p, state, bits);
-
-    while (!is_prime(p, iters)) {
+    while (!is_prime(p, iters) || (mpz_sizeinbase(p, 2) < bits)) {
         mpz_urandomb(p, state, bits);
-        if ((is_prime(p, iters)) && (mpz_sizeinbase(p, 2) == bits)) {
-            break;
-        }
     }
 }
