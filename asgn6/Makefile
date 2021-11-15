@@ -15,6 +15,7 @@ encrypt: $(E_OBJECTS)
 
 decrypt: $(D_OBJECTS)
 	$(CC) $(LDFLAGS) -o decrypt $(D_OBJECTS)
+
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<
 
