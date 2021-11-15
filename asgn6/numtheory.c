@@ -113,9 +113,6 @@ bool is_prime(mpz_t n, uint64_t iters) {
         //Else its not prime
         return false;
     }
-    if (mpz_cmp_ui(n, 3) == 0) {
-        return true;
-    }
 
     //Initialize s and r from n
     mpz_t s, r;
@@ -139,7 +136,7 @@ bool is_prime(mpz_t n, uint64_t iters) {
     mpz_sub_ui(conditional_n, n, 1);
     mpz_sub_ui(conditional_s, s, 1);
     mpz_set_ui(two, 2);
-    for (uint64_t i = 1; i < iters; i++) {
+    for (uint64_t i = 1; i <= iters; i++) {
         mpz_urandomm(a, state, range);
         mpz_add_ui(a, a, 2);
         pow_mod(y, a, r, n);
