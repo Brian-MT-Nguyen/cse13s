@@ -126,31 +126,3 @@ bool rsa_verify(mpz_t m, mpz_t s, mpz_t e, mpz_t n) {
     mpz_clear(t);
     return false;
 }
-
-int main(void) {
-    randstate_init(1000);
-    uint64_t bits = 64;
-    uint64_t iters = 100;
-    mpz_t first, second, n, e;
-    mpz_inits(first, second, n, e, NULL);
-
-    rsa_make_pub(first, second, n, e, bits, iters);
-    gmp_printf("1st: %Zd\n", first);
-    gmp_printf("2nd: %Zd\n", second);
-    gmp_printf("n: %Zd\n", n);
-    gmp_printf("e: %Zd\n", e);
-
-    rsa_make_priv(n, e, first, second);
-    gmp_printf("Private Key: %Zd\n", n);
-    //Initialize totient_n being (p-one)*(q-one)
-    mpz_t totient_n, p_one, q_one;
-    mpz_inits(totient_n, p_one, q_one, NULL);
-    mpz_sub_ui(p_one, first, 1);
-    mpz_sub_ui(q_one, second, 1);
-
-    //Calculate the totient of n
-    mpz_mul(totient_n, p_one, q_one);
-    gmp_printf("Totient n: %Zd\n", totient_n);
-    mpz_clears(first, second, n, e, totient_n, p_one, q_one, NULL);
-    randstate_clear();
-}
