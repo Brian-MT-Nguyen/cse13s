@@ -114,21 +114,18 @@ bool is_prime(mpz_t n, uint64_t iters) {
         return false;
     }
 
-    //Check if n is three(prime) to prevent impossible calculations
-    if (mpz_cmp_ui(n, 3) == 0) {
-        return true;
-    }
-
-    //Initialize  s and r from n
+    //Initialize s and r from n
     mpz_t s, r;
     mpz_inits(s, r, NULL);
     mpz_sub_ui(r, n, 1);
-
+    uint64_t s_index = 0;
     //Divides r until r is odd and increments s, satisfying equation from pseudo
     while (mpz_even_p(r) != 0) {
-        mpz_fdiv_q_ui(r, r, 2);
-        mpz_add_ui(s, s, 1);
+	s_index = mpz_scan0(r, 1);
+	mpz_mul_2exp(r, r, s_index);
     }
+
+    mpz_set_ui(s, s_index);
 
     //Initialize variables that generates random a in range two to n-two
     mpz_t range, a;
