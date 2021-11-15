@@ -79,17 +79,18 @@ void mod_inverse(mpz_t i, mpz_t a, mpz_t n) {
 //exponent: number that is the exponent of the base
 //modulus: number that is be used to mod value
 void pow_mod(mpz_t out, mpz_t base, mpz_t exponent, mpz_t modulus) {
-    //Initialize variable that holds base & exponent which will change in function
-    mpz_t changing_base, changing_exponent;
+    //Initialize variable that holds base, exponent, out  to prevent unexpected manipulation of inputs
+    mpz_t changing_base, changing_exponent, changing_out;
 
-    mpz_set_ui(out, 1);
+    mpz_init_set(changing_out, out);
+    mpz_set_ui(changing_out, 1);
     mpz_init_set(changing_base, base);
     mpz_init_set(changing_exponent, exponent);
 
     while (mpz_sgn(changing_exponent) == 1) {
         if (mpz_odd_p(changing_exponent) != 0) {
-            mpz_mul(out, out, changing_base);
-            mpz_mod(out, out, modulus);
+            mpz_mul(changing_out, changing_out, changing_base);
+            mpz_mod(changing_out, changing_out, modulus);
         }
         mpz_mul(changing_base, changing_base, changing_base);
         mpz_mod(changing_base, changing_base, modulus);
@@ -134,8 +135,8 @@ bool is_prime(mpz_t n, uint64_t iters) {
     mpz_sub_ui(range, n, 3);
 
     //Initialize variables used in algorithm
-    mpz_t y, y_temp, j, two, conditional_n, conditional_s;
-    mpz_inits(y, y_temp, j, two, conditional_n, conditional_s, NULL);
+    mpz_t y, j, two, conditional_n, conditional_s;
+    mpz_inits(y, j, two, conditional_n, conditional_s, NULL);
     mpz_sub_ui(conditional_n, n, 1);
     mpz_sub_ui(conditional_s, s, 1);
     mpz_set_ui(two, 2);
@@ -146,24 +147,22 @@ bool is_prime(mpz_t n, uint64_t iters) {
         if ((mpz_cmp_ui(y, 1) != 0) && (mpz_cmp(y, conditional_n) != 0)) {
             mpz_set_ui(j, 1);
             while ((mpz_cmp(j, conditional_s) <= 0) && (mpz_cmp(y, conditional_n) != 0)) {
-                mpz_set(y_temp, y);
-                pow_mod(y, y_temp, two, n);
+                pow_mod(y, y, two, n);
 
                 if (mpz_cmp_ui(y, 1) == 0) {
-                    mpz_clears(
-                        s, r, range, a, y, y_temp, j, two, conditional_n, conditional_s, NULL);
+                    mpz_clears(s, r, range, a, y, j, two, conditional_n, conditional_s, NULL);
                     return false;
                 }
                 mpz_add_ui(j, j, 1);
             }
             if (mpz_cmp(y, conditional_n) != 0) {
-                mpz_clears(s, r, range, a, y, y_temp, j, two, conditional_n, conditional_s, NULL);
+                mpz_clears(s, r, range, a, y, j, two, conditional_n, conditional_s, NULL);
                 return false;
             }
         }
     }
 
-    mpz_clears(s, r, range, a, y, y_temp, j, two, conditional_n, conditional_s, NULL);
+    mpz_clears(s, r, range, a, y, j, two, conditional_n, conditional_s, NULL);
     return true;
 }
 //Generates a number that is bits long, then tests if prime using is_prime
