@@ -19,9 +19,9 @@ void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t i
     mpz_fdiv_q_ui(p_range, p_range, 4);
     mpz_add(p_bits, p_bits, p_range);
     mpz_set(p, p_bits);
+    mpz_add_ui(p_bits, p_bits, 1);
 
     uint64_t p_bits_ui = mpz_get_ui(p_bits);
-
     //Generate p from p_bits
     make_prime(p, p_bits_ui, iters);
 
@@ -29,6 +29,7 @@ void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t i
     mpz_t q_bits;
     mpz_init2(q_bits, nbits);
     mpz_ui_sub(q_bits, nbits, p_bits);
+    mpz_add_ui(q_bits, q_bits, 1);
 
     uint64_t q_bits_ui = mpz_get_ui(q_bits);
     //Generate q from n_bits - p_bits
