@@ -97,7 +97,7 @@ void pow_mod(mpz_t out, mpz_t base, mpz_t exponent, mpz_t modulus) {
         mpz_fdiv_q_ui(changing_exponent, changing_exponent, 2);
     }
     mpz_set(out, changing_out);
-    mpz_clears(changing_base, changing_exponent, NULL);
+    mpz_clears(changing_base, changing_exponent, changing_out, NULL);
 }
 //Tests if a number is prime via the Miller-Rabin Algorithm
 //
@@ -163,18 +163,20 @@ bool is_prime(mpz_t n, uint64_t iters) {
                 pow_mod(y, y, two, n);
 
                 if (mpz_cmp_ui(y, 1) == 0) {
-                    mpz_clears(s, r, range, a, y, j, two, conditional_n, conditional_s, NULL);
+                    mpz_clears(
+                        mod_checker, s, r, range, a, y, j, two, conditional_n, conditional_s, NULL);
                     return false;
                 }
                 mpz_add_ui(j, j, 1);
             }
             if (mpz_cmp(y, conditional_n) != 0) {
-                mpz_clears(s, r, range, a, y, j, two, conditional_n, conditional_s, NULL);
+                mpz_clears(
+                    mod_checker, s, r, range, a, y, j, two, conditional_n, conditional_s, NULL);
                 return false;
             }
         }
     }
-    mpz_clears(s, r, range, a, y, j, two, conditional_n, conditional_s, NULL);
+    mpz_clears(mod_checker, s, r, range, a, y, j, two, conditional_n, conditional_s, NULL);
     return true;
 }
 //Generates a number that is bits long, then tests if prime using is_prime
