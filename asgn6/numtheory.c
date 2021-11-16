@@ -104,14 +104,27 @@ void pow_mod(mpz_t out, mpz_t base, mpz_t exponent, mpz_t modulus) {
 //n: the number to test if prime or not
 //iters: amount of iterations to test prime number with
 bool is_prime(mpz_t n, uint64_t iters) {
+    mpz_t mod_checker;
+    mpz_init(mod_checker);
+    mpz_mod_ui(mod_checker, n, 2);
     //Check if n is even
-    if (mpz_even_p(n) != 0) {
+    if (mpz_sgn(mod_checker) == 0) {
         //Check if n is two
         if (mpz_cmp_ui(n, 2) == 0) {
+            mpz_clear(mod_checker);
             return true;
         }
         //Else its not prime
+        mpz_clear(mod_checker);
         return false;
+    }
+
+    //Check if n is zero, one, or three(prime) to avoid impossible calculations
+    if (mpz_cmp_ui(n, 1) == 0) {
+        return true;
+    }
+    if (mpz_cmp_ui(n, 3) == 0) {
+        return true;
     }
 
     //Initialize s and r from n
