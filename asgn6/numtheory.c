@@ -79,7 +79,7 @@ void mod_inverse(mpz_t i, mpz_t a, mpz_t n) {
 //exponent: number that is the exponent of the base
 //modulus: number that is be used to mod value
 void pow_mod(mpz_t out, mpz_t base, mpz_t exponent, mpz_t modulus) {
-    //Initialize variable that holds base, exponent, out  to prevent unexpected manipulation of inputs
+    //Initialize variable that holds base, exponent, out to prevent unexpected manipulation of inputs
     mpz_t changing_base, changing_exponent, changing_out;
 
     mpz_init_set(changing_out, out);
@@ -99,6 +99,7 @@ void pow_mod(mpz_t out, mpz_t base, mpz_t exponent, mpz_t modulus) {
     mpz_set(out, changing_out);
     mpz_clears(changing_base, changing_exponent, changing_out, NULL);
 }
+
 //Tests if a number is prime via the Miller-Rabin Algorithm
 //
 //n: the number to test if prime or not
@@ -179,6 +180,7 @@ bool is_prime(mpz_t n, uint64_t iters) {
     mpz_clears(mod_checker, s, r, range, a, y, j, two, conditional_n, conditional_s, NULL);
     return true;
 }
+
 //Generates a number that is bits long, then tests if prime using is_prime
 //Keeps generating until both conditions are satisfied
 //
