@@ -104,9 +104,11 @@ void pow_mod(mpz_t out, mpz_t base, mpz_t exponent, mpz_t modulus) {
 //n: the number to test if prime or not
 //iters: amount of iterations to test prime number with
 bool is_prime(mpz_t n, uint64_t iters) {
+    //Initialize modulus checker to see if n is even (or n % two = zero)
     mpz_t mod_checker;
     mpz_init(mod_checker);
     mpz_mod_ui(mod_checker, n, 2);
+
     //Check if n is even
     if (mpz_sgn(mod_checker) == 0) {
         //Check if n is two
@@ -114,12 +116,12 @@ bool is_prime(mpz_t n, uint64_t iters) {
             mpz_clear(mod_checker);
             return true;
         }
-        //Else its not prime
+        //Else its not prime (including zero)
         mpz_clear(mod_checker);
         return false;
     }
 
-    //Check if n is one(false), or three(prime) to avoid impossible calculations
+    //Check if n is one(not prime), or three(prime) to avoid impossible calculations
     if (mpz_cmp_ui(n, 1) == 0) {
         return false;
     }
@@ -149,6 +151,8 @@ bool is_prime(mpz_t n, uint64_t iters) {
     mpz_sub_ui(conditional_n, n, 1);
     mpz_sub_ui(conditional_s, s, 1);
     mpz_set_ui(two, 2);
+
+    //Follow M-R Algorithm
     for (uint64_t i = 1; i <= iters; i++) {
         mpz_urandomm(a, state, range);
         mpz_add_ui(a, a, 2);
@@ -170,7 +174,6 @@ bool is_prime(mpz_t n, uint64_t iters) {
             }
         }
     }
-
     mpz_clears(s, r, range, a, y, j, two, conditional_n, conditional_s, NULL);
     return true;
 }

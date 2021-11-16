@@ -23,6 +23,7 @@ void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t i
     mpz_add_ui(p_bits, p_bits, 1);
 
     uint64_t p_bits_ui = mpz_get_ui(p_bits);
+
     //Generate p from p_bits
     make_prime(p, p_bits_ui, iters);
 
