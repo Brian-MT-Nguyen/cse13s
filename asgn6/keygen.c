@@ -76,30 +76,26 @@ int main(int argc, char **argv) {
         }
     }
 
-    //Set permissions to private file (only accessible by owner)
+    //Set permissions to private file (only modifiable and accessible by owner)
     fchmod(fileno(pvfile), S_IRUSR | S_IWUSR);
 
-    //Set random state using seed;
+    //Set random state using seed
     randstate_init(seed);
 
     //Initialize p, q, n, e to use to make the public key
     mpz_t p, q, n, e;
     mpz_inits(p, q, n, e, NULL);
-
-    //Make the public key
     rsa_make_pub(p, q, n, e, bits, iters);
 
-    //Initialize d to store private key
+    //Initialize d to store new made private key
     mpz_t d;
     mpz_init(d);
-
-    //Make private key
     rsa_make_priv(d, e, p, q);
 
     //Get the username of owner
     char *username = getenv("USER");
 
-    //Convert char to mpz
+    //Convert char to mpz_t
     mpz_t user;
     mpz_init(user);
     mpz_set_str(user, username, 62);
