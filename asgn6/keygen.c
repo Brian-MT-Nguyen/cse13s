@@ -15,14 +15,16 @@
 
 int main(int argc, char **argv) {
     //Intializes input and output files that will be grabbed for program
-    FILE *pbfile = fopen("rsa.pub", "w");
-    FILE *pvfile = fopen("rsa.priv", "w");
+    FILE *pbfile;
+    FILE *pvfile;
 
     //Initialize variables used to parse through command line
     int opt = 0;
     uint64_t bits = 256;
     uint64_t iters = 50;
     uint64_t seed = time(NULL);
+    bool pb_opened = false;
+    bool pv_opened = false;
     bool verbose = false;
     bool help = false;
 
@@ -32,12 +34,12 @@ int main(int argc, char **argv) {
         case 'b': bits = atoi(optarg); break;
         case 'i': iters = atoi(optarg); break;
         case 'n':
+            pb_opened = true;
             pbfile = fopen(optarg, "w");
-            remove("rsa.pub");
             break;
         case 'd':
+            pv_opened = true;
             pvfile = fopen(optarg, "w");
-            remove("rsa.priv");
             break;
         case 's': seed = atoi(optarg); break;
         case 'v': verbose = true; break;
@@ -64,10 +66,18 @@ int main(int argc, char **argv) {
         printf("  -s seed        Random seed for testing.\n");
     }
 
+    //Creates/opens default write files if pbfile and/or pvfile was not specified
+    if (!pb_opened || !pv_opened) {
+        if (!pb_opened) {
+            pbfile = fopen("rsa.pub", "w");
+        }
+        if (!pv_opened) {
+            pvfile = fopen("rsa.priv", "w");
+        }
+    }
+
     //Set permissions to private file (only accessible by owner)
-    fchmod(0600, S_IRUSR);
-    fchmod(0600, S_IWUSR);
-    fileno(pvfile);
+    fchmod(fileno(pvfile), S_IRUSR | S_IWUSR);
 
     //Set random state using seed;
     randstate_init(seed);
