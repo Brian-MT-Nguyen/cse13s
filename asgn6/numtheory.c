@@ -119,9 +119,9 @@ bool is_prime(mpz_t n, uint64_t iters) {
         return false;
     }
 
-    //Check if n is zero, one, or three(prime) to avoid impossible calculations
+    //Check if n is one(false), or three(prime) to avoid impossible calculations
     if (mpz_cmp_ui(n, 1) == 0) {
-        return true;
+        return false;
     }
     if (mpz_cmp_ui(n, 3) == 0) {
         return true;
