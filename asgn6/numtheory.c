@@ -35,7 +35,7 @@ void mod_inverse(mpz_t i, mpz_t a, mpz_t n) {
     mpz_init_set(r, n);
     mpz_init_set(r_prime, a);
 
-    //Initialize i(_temp to prevent accidentally manipualtion) and i_prime (in place of t and t_prime from algorithm)
+    //Initialize i(_temp to prevent unexpected manipulation) and i_prime (in place of t and t_prime from algorithm)
     mpz_t i_temp;
     mpz_t i_prime;
     mpz_init_set_ui(i_temp, 0);
