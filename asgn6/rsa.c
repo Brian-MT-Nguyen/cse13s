@@ -1,41 +1,27 @@
 #include "rsa.h"
 #include "randstate.h"
 #include "numtheory.h"
+#include <stdlib.h>
 
 void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t iters) {
-    //Initialize range for p_bits before adding
-    mpz_t p_bits, p_range;
-    mpz_init2(p_bits, nbits);
-    mpz_init2(p_range, nbits);
-    mpz_set_ui(p_range, nbits);
-    mpz_mul_ui(p_range, p_range, 2);
-    mpz_fdiv_q_ui(p_range, p_range, 4);
+    //Range from lower to upper: number = (random() % (upper - lower + 1)) + lower
+    //p_bits range is nbits/four to (three*nbits)/four
+    uint64_t p_bits = (random() % (((3 * nbits) / 4) - (nbits / 4) + 1)) + (nbits / 4);
 
-    //Generate range for bits to p
-    mpz_urandomm(p_bits, state, p_range);
-
-    //Add nbits/four to range to satisfying range
-    mpz_set_ui(p_range, nbits);
-    mpz_fdiv_q_ui(p_range, p_range, 4);
-    mpz_add(p_bits, p_bits, p_range);
-
-    mpz_add_ui(p_bits, p_bits, 1);
-
-    uint64_t p_bits_ui = mpz_get_ui(p_bits);
+    //Add one to p_bits to make sure n is greater or equal to nbits
+    p_bits += 1;
 
     //Generate p from p_bits
-    make_prime(p, p_bits_ui, iters);
+    make_prime(p, p_bits, iters);
 
-    //Initialize q_bits getting remaining bits for p_bits
-    mpz_t q_bits;
-    mpz_init2(q_bits, nbits);
-    mpz_ui_sub(q_bits, nbits, p_bits);
+    //q_bits is remaining bits from nbits not taken by p_bits
+    uint64_t q_bits = nbits - p_bits;
 
-    mpz_add_ui(q_bits, q_bits, 1);
+    //Add one to q_bits to make sure n is greater or equal to nbits
+    q_bits += 1;
 
-    uint64_t q_bits_ui = mpz_get_ui(q_bits);
     //Generate q from n_bits - p_bits
-    make_prime(q, q_bits_ui, iters);
+    make_prime(q, q_bits, iters);
 
     //Calculate n which is p * q
     mpz_mul(n, p, q);
@@ -59,7 +45,7 @@ void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t i
         gcd(coprime_checker, e, totient_n);
     }
     //Clear mpz vars
-    mpz_clears(p_bits, p_range, q_bits, totient_n, p_one, q_one, coprime_checker, NULL);
+    mpz_clears(totient_n, p_one, q_one, coprime_checker, NULL);
 }
 
 void rsa_write_pub(mpz_t n, mpz_t e, mpz_t s, char username[], FILE *pbfile) {
