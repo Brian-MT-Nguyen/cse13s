@@ -35,9 +35,10 @@ void mod_inverse(mpz_t i, mpz_t a, mpz_t n) {
     mpz_init_set(r, n);
     mpz_init_set(r_prime, a);
 
-    //Initialize i and i_prime (in place of t and t_prime from algorithm)
+    //Initialize i(_temp to prevent accidentally manipualtion) and i_prime (in place of t and t_prime from algorithm)
+    mpz_t i_temp;
     mpz_t i_prime;
-    mpz_set_ui(i, 0);
+    mpz_init_set_ui(i_temp, 0);
     mpz_init_set_ui(i_prime, 1);
 
     //Intiailize q from algorithm
@@ -55,21 +56,25 @@ void mod_inverse(mpz_t i, mpz_t a, mpz_t n) {
         mpz_submul(temp, q, r_prime);
         mpz_set(r_prime, temp);
 
-        mpz_set(temp, i);
-        mpz_set(i, i_prime);
+        mpz_set(temp, i_temp);
+        mpz_set(i_temp, i_prime);
         mpz_submul(temp, q, i_prime);
         mpz_set(i_prime, temp);
     }
+
+    //Set i to final output of temp i
+    mpz_set(i, i_temp);
 
     if (mpz_cmp_ui(r, 1) > 0) {
         mpz_set_ui(i, 0);
     }
 
     if (mpz_sgn(i) == -1) {
-        mpz_add(i, i, n);
+        mpz_add(i_temp, i_temp, n);
+        mpz_set(i, i_temp);
     }
 
-    mpz_clears(r, r_prime, i_prime, q, temp, NULL);
+    mpz_clears(r, r_prime, i_temp, i_prime, q, temp, NULL);
 }
 
 //Computes base^exponent mod modulus, then puts value in out
