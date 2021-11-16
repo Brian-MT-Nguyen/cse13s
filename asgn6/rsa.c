@@ -18,7 +18,6 @@ void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t i
     mpz_set_ui(p_range, nbits);
     mpz_fdiv_q_ui(p_range, p_range, 4);
     mpz_add(p_bits, p_bits, p_range);
-    mpz_set(p, p_bits);
 
     mpz_add_ui(p_bits, p_bits, 1);
 
