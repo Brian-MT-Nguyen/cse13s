@@ -185,7 +185,7 @@ bool is_prime(mpz_t n, uint64_t iters) {
 //iters: the amount of iterations to test if a number is prime
 void make_prime(mpz_t p, uint64_t bits, uint64_t iters) {
     mpz_urandomb(p, state, bits);
-    while (!is_prime(p, iters) || (mpz_sizeinbase(p, 2) < bits)) {
+    while (!is_prime(p, iters) && (mpz_sizeinbase(p, 2) < bits)) {
         mpz_urandomb(p, state, bits);
     }
 }
