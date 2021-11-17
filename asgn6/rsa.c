@@ -131,15 +131,15 @@ void rsa_decrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t d) {
     mpz_init(c);
 
     //Reads from binary file starting index one to k-one (j is return value of total bits written)
-    size_t j;
-    while ((j = gmp_fscanf(infile, "%Zx\n", c)) > 0) {
+    while (gmp_fscanf(infile, "%Zx\n", c) > 0) {
         //Decrypt each scan from c
         rsa_decrypt(c, c, d, n);
 
-        //Convert the bytes read from c to block
+        //Convert the bytes read from c to block and puts bytes read in j
+        size_t j;
         mpz_export(block, &j, 1, sizeof(uint8_t), 1, 0, c);
 
-        //Write from block index to outfile excluding index zero
+        //Write from block one to j - one to outfile
         fwrite(block + 1, sizeof(uint8_t), j - 1, outfile);
     }
     //Free/Clear memory
