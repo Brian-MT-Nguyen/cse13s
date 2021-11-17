@@ -104,7 +104,7 @@ void rsa_encrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t e) {
 
     //Reads from binary file starting index one to k-one (j is return value of total bits written)
     size_t j;
-    while ((j = fread(block + 1, sizeof(uint8_t), k - 1, infile) > 0)) {
+    while ((j = fread(block + 1, sizeof(uint8_t), k - 1, infile)) > 0) {
         //Convert the bytes read from file into m (including the 0th byte)
         mpz_import(m, j + 1, 1, sizeof(uint8_t), 1, 0, block);
 
@@ -135,7 +135,7 @@ void rsa_decrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t d) {
 
     //Reads from binary file starting index one to k-one (j is return value of total bits written)
     size_t j;
-    while ((j = gmp_fscanf(infile, "%Zx\n", c) > 0)) {
+    while ((j = gmp_fscanf(infile, "%Zx\n", c)) > 0) {
         //Decrypt each scan from c
         rsa_decrypt(c, c, d, n);
 

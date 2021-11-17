@@ -29,7 +29,10 @@ int main(int argc, char **argv) {
         switch (opt) {
         case 'i': infile = fopen(optarg, "r"); break;
         case 'o': outfile = fopen(optarg, "w"); break;
-        case 'n': pbfile = fopen(optarg, "w"); break;
+        case 'n':
+            pb_opened = true;
+            pbfile = fopen(optarg, "r");
+            break;
         case 'v': verbose = true; break;
         case 'h': help = true; break;
         default: break;
