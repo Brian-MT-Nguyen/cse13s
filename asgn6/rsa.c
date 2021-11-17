@@ -126,9 +126,6 @@ void rsa_decrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t d) {
     size_t k = (mpz_sizeinbase(n, 2) - 1) / 8;
     uint8_t *block = (uint8_t *) calloc(k, sizeof(uint8_t));
 
-    //Prepend padding at byte zero to avoid impossible cases
-    block[0] = 0xFF;
-
     //Initialize c which stores scanned lines from infile
     mpz_t c;
     mpz_init(c);
@@ -145,9 +142,8 @@ void rsa_decrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t d) {
         //Write from block index to outfile excluding index zero
         fwrite(block + 1, sizeof(uint8_t), j - 1, outfile);
     }
-
     //Free/Clear memory
-    free(&block);
+    free(block);
     mpz_clear(c);
 }
 
