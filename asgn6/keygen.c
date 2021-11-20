@@ -36,10 +36,20 @@ int main(int argc, char **argv) {
         case 'n':
             pb_opened = true;
             pbfile = fopen(optarg, "w");
+            if (pbfile == NULL) {
+                fprintf(stderr, "Error opening public key file. Exiting Program.\n");
+                fclose(pbfile);
+                exit(EXIT_FAILURE);
+            }
             break;
         case 'd':
             pv_opened = true;
             pvfile = fopen(optarg, "w");
+            if (pvfile == NULL) {
+                fprintf(stderr, "Error opening private key file. Exiting Program.\n");
+                fclose(pvfile);
+                exit(EXIT_FAILURE);
+            }
             break;
         case 's': seed = atoi(optarg); break;
         case 'v': verbose = true; break;
