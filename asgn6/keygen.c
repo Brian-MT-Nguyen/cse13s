@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
         printf("   -n pbfile       Public key file (default: rsa.pub).\n");
         printf("   -d pvfile       Private key file (default: rsa. priv).\n");
         printf("   -s seed         Random seed for testing.\n");
-    	return 0;
+        return 0;
     }
 
     //Creates/opens default write files if pbfile and/or pvfile was not specified

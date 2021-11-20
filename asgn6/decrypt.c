@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
 
     //Prints help message if prompted
     if (help) {
-	printf("SYNOPSIS\n");
+        printf("SYNOPSIS\n");
         printf("   Decrypts data using RSA decryption.\n");
         printf("   Encrypted data is encrypted by the encrypt program.\n");
 
@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
         printf("   -i infile       Input file of data to encrypt (default: stdin).\n");
         printf("   -o outfile      Output file for encrypted data (default: stdout).\n");
         printf("   -d pvfile       Private key file (default: rsa.priv).\n");
-	return 0;
+        return 0;
     }
 
     //Creates/opens default write files if pvfile was not specified

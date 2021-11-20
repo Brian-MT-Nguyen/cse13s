@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
     if (help) {
         printf("SYNOPSIS\n");
         printf("   Encrypts data using RSA encryption.\n");
-	printf("   Encrypted data is decrypted by the decrypt program.\n");
+        printf("   Encrypted data is decrypted by the decrypt program.\n");
 
         printf("\nUSAGE\n");
         printf("   ./encrypt [-hv] [-i infile] [-o outfile] -n pubkey\n");
@@ -72,9 +72,9 @@ int main(int argc, char **argv) {
         printf("\nOPTIONS\n");
         printf("   -h              Display program help and usage.\n");
         printf("   -v              Display verbose program output.\n");
-	printf("   -i infile       Input file of data to encrypt (default: stdin).\n");
+        printf("   -i infile       Input file of data to encrypt (default: stdin).\n");
         printf("   -o outfile      Output file for encrypted data (default: stdout).\n");
-	printf("   -n pbfile       Public key file (default: rsa.pub).\n");
+        printf("   -n pbfile       Public key file (default: rsa.pub).\n");
         return 0;
     }
     //Creates/opens default write files if pbfile and/or pvfile was not specified
