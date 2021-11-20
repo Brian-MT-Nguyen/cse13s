@@ -1,7 +1,7 @@
-# Assignment 5 - Huffman
+# Assignment 6 - Public Key Cryptography
 
 ## Description
-This program contains an implementation of the Huffman encoder and decoder used to compress a data file. With this, the encoder has the job of compressing the file as it receives and reads an input then assigns the least amount of bits to the most common symbol and the greatest amount of bits to the least common symbol. The decoder does the opposite by reverting the compressed file back to its original raw size. 
+This collection of programs implement the RSA public-key cryptosystem with the structure of a key generator, encryptor, and decryptor. The key generator produces an RSA private file and public key file. The encryptor uses the public key to encrypt files, and the decryptor uses the private key to decrypt the encrypted file. These programs together are used to securely encrypt and decrypt messages or files sent between clients.
 
 ## How to Build
 1. Must have all .c and .h files asscociated with said program and "Makefile".
