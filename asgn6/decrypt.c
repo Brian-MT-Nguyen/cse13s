@@ -27,11 +27,30 @@ int main(int argc, char **argv) {
     //Parses through command line input options
     while ((opt = getopt(argc, argv, OPTIONS)) != -1) {
         switch (opt) {
-        case 'i': infile = fopen(optarg, "r"); break;
-        case 'o': outfile = fopen(optarg, "w"); break;
+        case 'i':
+            infile = fopen(optarg, "r");
+            if (infile == NULL) {
+                fprintf(stderr, "Error opening infile. Exiting Program.\n");
+                fclose(infile);
+                exit(EXIT_FAILURE);
+            }
+            break;
+        case 'o':
+            outfile = fopen(optarg, "w");
+            if (outfile == NULL) {
+                fprintf(stderr, "Error opening outfile. Exiting Program.\n");
+                fclose(outfile);
+                exit(EXIT_FAILURE);
+            }
+            break;
         case 'n':
             pv_opened = true;
             pvfile = fopen(optarg, "r");
+            if (pvfile == NULL) {
+                fprintf(stderr, "Error opening private key file. Exiting Program.\n");
+                fclose(pvfile);
+                exit(EXIT_FAILURE);
+            }
             break;
         case 'v': verbose = true; break;
         case 'h': help = true; break;
@@ -41,20 +60,20 @@ int main(int argc, char **argv) {
 
     //Prints help message if prompted
     if (help) {
-        printf("SYNOPSIS\n");
-        printf("  Generates an RSA public/private key pair.\n");
+	printf("SYNOPSIS\n");
+        printf("   Decrypts data using RSA decryption.\n");
+        printf("   Encrypted data is encrypted by the encrypt program.\n");
 
-        printf("USAGE\n");
-        printf("  ./keygen [-hv] [-b bits] -i iters -n pbfile -d pvfile \n");
+        printf("\nUSAGE\n");
+        printf("   ./decrypt [-hv] [-i infile] [-o outfile] -d privkey\n");
 
-        printf("OPTIONS\n");
-        printf("  -h             Display program usage and help.\n");
-        printf("  -v             Display verbose output program.\n");
-        printf("  -b bits        Minimum bits needed for public key n.\n");
-        printf("  -i iters       Miller-Rabin iterations for testing primes (default: 50).\n");
-        printf("  -n pbfile      Public key file (default: rsa.pub).\n");
-        printf("  -d pvfile      Private key file (default: rsa. priv).\n");
-        printf("  -s seed        Random seed for testing.\n");
+        printf("\nOPTIONS\n");
+        printf("   -h              Display program help and usage.\n");
+        printf("   -v              Display verbose program output.\n");
+        printf("   -i infile       Input file of data to encrypt (default: stdin).\n");
+        printf("   -o outfile      Output file for encrypted data (default: stdout).\n");
+        printf("   -d pvfile       Private key file (default: rsa.priv).\n");
+	return 0;
     }
 
     //Creates/opens default write files if pvfile was not specified

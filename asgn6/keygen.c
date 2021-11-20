@@ -35,10 +35,20 @@ int main(int argc, char **argv) {
         case 'i': iters = atoi(optarg); break;
         case 'n':
             pb_opened = true;
+            if (pbfile == NULL) {
+                fprintf(stderr, "Error opening prublic key file. Exiting Program.\n");
+                fclose(pbfile);
+                exit(EXIT_FAILURE);
+            }
             pbfile = fopen(optarg, "w");
             break;
         case 'd':
             pv_opened = true;
+            if (pvfile == NULL) {
+                fprintf(stderr, "Error opening private key file. Exiting Program.\n");
+                fclose(pvfile);
+                exit(EXIT_FAILURE);
+            }
             pvfile = fopen(optarg, "w");
             break;
         case 's': seed = atoi(optarg); break;
@@ -51,19 +61,20 @@ int main(int argc, char **argv) {
     //Prints help message if prompted
     if (help) {
         printf("SYNOPSIS\n");
-        printf("  Generates an RSA public/private key pair.\n");
+        printf("   Generates an RSA public/private key pair.\n");
 
-        printf("USAGE\n");
-        printf("  ./keygen [-hv] [-b bits] -i iters -n pbfile -d pvfile \n");
+        printf("\nUSAGE\n");
+        printf("   ./keygen [-hv] [-b bits] -i iters -n pbfile -d pvfile -s seed\n");
 
-        printf("OPTIONS\n");
-        printf("  -h             Display program usage and help.\n");
-        printf("  -v             Display verbose output program.\n");
-        printf("  -b bits        Minimum bits needed for public key n.\n");
-        printf("  -i iters       Miller-Rabin iterations for testing primes (default: 50).\n");
-        printf("  -n pbfile      Public key file (default: rsa.pub).\n");
-        printf("  -d pvfile      Private key file (default: rsa. priv).\n");
-        printf("  -s seed        Random seed for testing.\n");
+        printf("\nOPTIONS\n");
+        printf("   -h              Display program help and usage.\n");
+        printf("   -v              Display verbose program output.\n");
+        printf("   -b bits         Minimum bits needed for public key n.\n");
+        printf("   -i iters        Miller-Rabin iterations for testing primes (default: 50).\n");
+        printf("   -n pbfile       Public key file (default: rsa.pub).\n");
+        printf("   -d pvfile       Private key file (default: rsa. priv).\n");
+        printf("   -s seed         Random seed for testing.\n");
+    	return 0;
     }
 
     //Creates/opens default write files if pbfile and/or pvfile was not specified
