@@ -93,12 +93,12 @@ int main(int argc, char **argv) {
     //Set random state using seed
     randstate_init(seed);
 
-    //Initialize p, q, n, e to use to make the public key
+    //Make public key and store info into initialized vars
     mpz_t p, q, n, e;
     mpz_inits(p, q, n, e, NULL);
     rsa_make_pub(p, q, n, e, bits, iters);
 
-    //Initialize d to store new made private key
+    //Make private key and store info into initialized d var
     mpz_t d;
     mpz_init(d);
     rsa_make_priv(d, e, p, q);
@@ -106,7 +106,7 @@ int main(int argc, char **argv) {
     //Get the username of owner
     char *username = getenv("USER");
 
-    //Convert char to mpz_t
+    //Convert char username to mpz_t
     mpz_t user;
     mpz_init(user);
     mpz_set_str(user, username, 62);
@@ -116,11 +116,11 @@ int main(int argc, char **argv) {
     mpz_init(signature);
     rsa_sign(signature, user, d, n);
 
-    //Write Keys to respective files
+    //Write keys to respective files
     rsa_write_pub(n, e, signature, username, pbfile);
     rsa_write_priv(n, d, pvfile);
 
-    //If Verbose is inputted print output
+    //Print verbose output if prompted
     if (verbose) {
         gmp_printf("user = %s\n", username);
         gmp_printf("s (%zu bits) = %Zd\n", mpz_sizeinbase(signature, 2), signature);

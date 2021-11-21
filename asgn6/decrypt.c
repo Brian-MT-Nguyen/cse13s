@@ -18,6 +18,7 @@ int main(int argc, char **argv) {
     FILE *infile = stdin;
     FILE *outfile = stdout;
     FILE *pvfile;
+
     //Initialize variables used to parse through command line
     int opt = 0;
     bool pv_opened = false;
@@ -58,7 +59,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    //Prints help message if prompted
+    //Prints help message if prompted or invalid use of arguments
     if (help || optopt != 0) {
         printf("SYNOPSIS\n");
         printf("   Decrypts data using RSA decryption.\n");
@@ -81,18 +82,21 @@ int main(int argc, char **argv) {
         pvfile = fopen("rsa.priv", "r");
     }
 
-    //Initialize vars that will store private key info
+    //Read private key and store info into initialized vars
     mpz_t n, priv_key;
     mpz_inits(n, priv_key, NULL);
     rsa_read_priv(n, priv_key, pvfile);
 
+    //Print verbose output if prompted
     if (verbose) {
         gmp_printf("n (%zu bits) = %Zd\n", mpz_sizeinbase(n, 2), n);
         gmp_printf("e (%zu bits) = %Zd\n", mpz_sizeinbase(priv_key, 2), priv_key);
     }
 
+    //Decrypt file
     rsa_decrypt_file(infile, outfile, n, priv_key);
 
+    //Close files and clear vars
     fclose(pvfile);
     fclose(infile);
     fclose(outfile);

@@ -38,7 +38,6 @@ int main(int argc, char **argv) {
             break;
         case 'o':
             outfile = fopen(optarg, "w");
-            //Prints Error and Exits program if invalid outfile is given
             if (outfile == NULL) {
                 fprintf(stderr, "Error opening outfile. Exiting Program.\n");
                 fclose(outfile);
@@ -60,7 +59,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    //Prints help message if prompted
+    //Prints help message if prompted or invalid use of arguments
     if (help || optopt != 0) {
         printf("SYNOPSIS\n");
         printf("   Encrypts data using RSA encryption.\n");
@@ -82,12 +81,13 @@ int main(int argc, char **argv) {
         pbfile = fopen("rsa.pub", "r");
     }
 
-    //Initialize vars that will store public key info
+    //Read public key and store info into initialized vars
     mpz_t n, exponent, signature;
     mpz_inits(n, exponent, signature, NULL);
     char username[32];
     rsa_read_pub(n, exponent, signature, username, pbfile);
 
+    //Print verbose output if prompted
     if (verbose) {
         gmp_printf("user = %s\n", username);
         gmp_printf("s (%zu bits) = %Zd\n", mpz_sizeinbase(signature, 2), signature);
@@ -104,8 +104,10 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
 
+    //Encrypt file if signature is verified
     rsa_encrypt_file(infile, outfile, n, exponent);
 
+    //Close files and clear vars
     fclose(pbfile);
     fclose(infile);
     fclose(outfile);
