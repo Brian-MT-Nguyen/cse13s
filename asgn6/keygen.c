@@ -14,7 +14,7 @@
 #define OPTIONS "b:i:n:d:s:vh"
 
 int main(int argc, char **argv) {
-    //Intializes input and output files that will be grabbed for program
+    //Intializes public and private key file that will be grabbed for program
     FILE *pbfile;
     FILE *pvfile;
 
@@ -122,7 +122,7 @@ int main(int argc, char **argv) {
 
     //Print verbose output if prompted
     if (verbose) {
-        gmp_printf("user = %s\n", username);
+        printf("user = %s\n", username);
         gmp_printf("s (%zu bits) = %Zd\n", mpz_sizeinbase(signature, 2), signature);
         gmp_printf("p (%zu bits) = %Zd\n", mpz_sizeinbase(p, 2), p);
         gmp_printf("q (%zu bits) = %Zd\n", mpz_sizeinbase(q, 2), q);

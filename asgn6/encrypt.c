@@ -14,7 +14,7 @@
 #define OPTIONS "i:o:n:vh"
 
 int main(int argc, char **argv) {
-    //Intializes input, output, and key files that will be grabbed for program
+    //Intializes input, output, and key file that will be grabbed for program
     FILE *infile = stdin;
     FILE *outfile = stdout;
     FILE *pbfile;
@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
         printf("   -n pbfile       Public key file (default: rsa.pub).\n");
         return 0;
     }
-    //Creates/opens default write files if pbfile was not specified
+    //Creates/opens default write file if pbfile was not specified
     if (!pb_opened) {
         pbfile = fopen("rsa.pub", "r");
     }
@@ -89,7 +89,7 @@ int main(int argc, char **argv) {
 
     //Print verbose output if prompted
     if (verbose) {
-        gmp_printf("user = %s\n", username);
+        printf("user = %s\n", username);
         gmp_printf("s (%zu bits) = %Zd\n", mpz_sizeinbase(signature, 2), signature);
         gmp_printf("n (%zu bits) = %Zd\n", mpz_sizeinbase(n, 2), n);
         gmp_printf("e (%zu bits) = %Zd\n", mpz_sizeinbase(exponent, 2), exponent);

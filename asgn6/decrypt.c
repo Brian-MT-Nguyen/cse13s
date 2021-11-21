@@ -14,7 +14,7 @@
 #define OPTIONS "i:o:n:vh"
 
 int main(int argc, char **argv) {
-    //Intializes input, output, and key files that will be grabbed for program
+    //Intializes input, output, and key file that will be grabbed for program
     FILE *infile = stdin;
     FILE *outfile = stdout;
     FILE *pvfile;
@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
         return 0;
     }
 
-    //Creates/opens default write files if pvfile was not specified
+    //Creates/opens default write file if pvfile was not specified
     if (!pv_opened) {
         pvfile = fopen("rsa.priv", "r");
     }
