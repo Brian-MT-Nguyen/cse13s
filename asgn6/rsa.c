@@ -3,24 +3,26 @@
 #include "numtheory.h"
 #include <stdlib.h>
 
+//Generates a public key for the user made of random prime (p), random prime (q), product of p*q (n), and random public exponent (e)
+//
+//p: the first random prime number
+//q: the second random prime number
+//n: the product of p and q
+//e: the public exponent computed by gcd of totient of n and random e equaling one
 void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t iters) {
     //Range from lower to upper: number = (random() % (upper - lower + 1)) + lower
     //p_bits range is nbits/four to (three*nbits)/four
     uint64_t p_bits = (random() % (((3 * nbits) / 4) - (nbits / 4) + 1)) + (nbits / 4);
 
-    //Add one to p_bits to make sure n is greater or equal to nbits
-    p_bits += 1;
-
-    //Generate p from p_bits
-    make_prime(p, p_bits, iters);
-
     //q_bits is remaining bits from nbits not taken by p_bits
     uint64_t q_bits = nbits - p_bits;
 
-    //Add one to q_bits to make sure n is greater or equal to nbits
+    //Add one to p_bits and q_bits to make sure n is greater or equal to nbits
+    p_bits += 1;
     q_bits += 1;
 
-    //Generate q from n_bits - p_bits
+    //Generate p and q prime numbers
+    make_prime(p, p_bits, iters);
     make_prime(q, q_bits, iters);
 
     //Calculate n which is p * q
@@ -48,20 +50,40 @@ void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t i
     mpz_clears(totient_n, p_one, q_one, coprime_checker, NULL);
 }
 
+//Writes the generated public key to the pbfile in specific formatted output
+//
+//n: the product of p and q (from rsa_make_pub)
+//e: the public exponent (from rsa_make_pub)
+//s: the signature (from rsa_sign)
+//username: the user's username in linux
+//pbfile: the file to write to
 void rsa_write_pub(mpz_t n, mpz_t e, mpz_t s, char username[], FILE *pbfile) {
     gmp_fprintf(pbfile, "%Zx\n", n);
     gmp_fprintf(pbfile, "%Zx\n", e);
     gmp_fprintf(pbfile, "%Zx\n", s);
-    gmp_fprintf(pbfile, "%s\n", username);
+    fprintf(pbfile, "%s\n", username);
 }
 
+//Reads the generated public key from the pbfile in specific formatted input
+//
+//n: the product of p and q (from rsa_make_pub)
+//e: the public exponent (from rsa_make_pub)
+//s: the signature (from rsa_sign)
+//username: the user's username in linux
+//pbfile: the file to read from
 void rsa_read_pub(mpz_t n, mpz_t e, mpz_t s, char username[], FILE *pbfile) {
     gmp_fscanf(pbfile, "%Zx\n", n);
     gmp_fscanf(pbfile, "%Zx\n", e);
     gmp_fscanf(pbfile, "%Zx\n", s);
-    gmp_fscanf(pbfile, "%s\n", username);
+    fscanf(pbfile, "%s\n", username);
 }
 
+//Generates the private key based on p, q, e from rsa_make_pub and stores in d
+//
+//d: the variable to store the private key
+//e: the public exponent (from rsa_make_pub)
+//p: the first random prime (from rsa_make_pub)
+//q: the second random prime (from rsa_make_pub)
 void rsa_make_priv(mpz_t d, mpz_t e, mpz_t p, mpz_t q) {
     //Initialize totient_n being (p-one)*(q-one)
     mpz_t totient_n, p_one, q_one;
@@ -71,25 +93,49 @@ void rsa_make_priv(mpz_t d, mpz_t e, mpz_t p, mpz_t q) {
 
     //Calculate the totient of n
     mpz_mul(totient_n, p_one, q_one);
+
+    //Makes the private key d from e and totient n (mod_inverse)
     mod_inverse(d, e, totient_n);
 
     mpz_clears(totient_n, p_one, q_one, NULL);
 }
 
+//Writes the generated private key to pvfile in specific formatted output
+//
+//n: the product of p and q (from rsa_make_pub)
+//d: the stored private key (from rsa_make_priv)
+//pvfile: the file to write to
 void rsa_write_priv(mpz_t n, mpz_t d, FILE *pvfile) {
     gmp_fprintf(pvfile, "%Zx\n", n);
     gmp_fprintf(pvfile, "%Zx\n", d);
 }
 
+//Reads the generated private key from the pvfile in specific formatted input
+//
+//n: the product of p and q (from rsa_make_pub)
+//d: the stored private key (from rsa_make_priv)
+//pvfile: the file to read from
 void rsa_read_priv(mpz_t n, mpz_t d, FILE *pvfile) {
     gmp_fscanf(pvfile, "%Zx\n", n);
     gmp_fscanf(pvfile, "%Zx\n", d);
 }
 
+//Encrypts message and stores in var c using pow_mod from numtheory
+//
+//c: the variable to store the encrypted message
+//m: the original message to be encrypted
+//e: the public exponent (from rsa_make_pub)
+//n: the product of p and q (from rsa_make_pub)
 void rsa_encrypt(mpz_t c, mpz_t m, mpz_t e, mpz_t n) {
     pow_mod(c, m, e, n);
 }
 
+//Encrypts the infile in k sized blocks at a time and writes to outfile in hexstrings
+//
+//infile: the input file to encrypt from
+//outfile: the output file to encrypt to
+//n: the product of p and q (from rsa_make_pub)
+//e: the public exponent (from rsa_make_pub)
 void rsa_encrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t e) {
     //Set k to block size that will be read
     size_t k = (mpz_sizeinbase(n, 2) - 1) / 8;
@@ -117,10 +163,22 @@ void rsa_encrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t e) {
     mpz_clear(m);
 }
 
+//Decrypts message and stores in var m using pow_mod from numtheory
+//
+//m: the variable that stores the decrypted message (the original one)
+//c: the encrypted message
+//d: the stored private key (from rsa_make_priv)
+//n: the product of p and q (from rsa_make_pub)
 void rsa_decrypt(mpz_t m, mpz_t c, mpz_t d, mpz_t n) {
     pow_mod(m, c, d, n);
 }
 
+//Decrypts the infile by scaning hexstrings and placing it in k sized blocks used to write the decrypted file to outfile
+//
+//infile: the input file to decrypt from
+//outfile: the output file to decrypt to
+//n: the product of p and q (from rsa_make_pub)
+//d: the stored private key (from rsa_make_priv)
 void rsa_decrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t d) {
     //Set k to block size that will be read
     size_t k = (mpz_sizeinbase(n, 2) - 1) / 8;
@@ -147,10 +205,24 @@ void rsa_decrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t d) {
     mpz_clear(c);
 }
 
+//Signs the message and stores in var s using pow_mod in numtheory
+//
+//s: the variable to store the signature
+//m: the message to sign
+//d: the stored private key (from rsa_make_priv)
+//n: the product of p and q (from rsa_make_pub)
 void rsa_sign(mpz_t s, mpz_t m, mpz_t d, mpz_t n) {
     pow_mod(s, m, d, n);
 }
 
+//Verifies the signed message using an expected message m using pow_mod in numtheory
+//Returns true if the signature and expected message are identical
+//Returns flase if the signature and expected message are not identical
+//
+//m: the expected message used to verify the signature
+//s: the stored signature (from rsa_sign)
+//e: the public exponent (from rsa_make_pub)
+//n: the product of p and q (from rsa_make_pub)
 bool rsa_verify(mpz_t m, mpz_t s, mpz_t e, mpz_t n) {
     //Initialize variable that stores inversed signature
     mpz_t t;

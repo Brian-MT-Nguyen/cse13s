@@ -3,7 +3,7 @@
 
 //Finds the greatest common divisor between a and b
 //
-//d: the output (common divisor)
+//d: the var to store the greatest common divisor
 //a: the first integer
 //b: the second integer
 void gcd(mpz_t d, mpz_t a, mpz_t b) {
@@ -22,20 +22,18 @@ void gcd(mpz_t d, mpz_t a, mpz_t b) {
     mpz_clears(temp, changing_b, changing_a, NULL);
 }
 
-//Finds the modular multiplicative inverse of n using a and stores in i
+//Finds the modular multiplicative inverse of a (mod n) and stores in i
 //
-//i: the modular inverse of a
+//i: the var to store the modular inverse of a (mod n)
 //a: the number
-//n: the modulus number
-//
-//DESCRIPTION NEEDS WORK
+//n: the number used to mod a
 void mod_inverse(mpz_t i, mpz_t a, mpz_t n) {
     //Initialize r and r-prime from algorithm
     mpz_t r, r_prime;
     mpz_init_set(r, n);
     mpz_init_set(r_prime, a);
 
-    //Initialize i(_temp to prevent unexpected manipulation) and i_prime (in place of t and t_prime from algorithm)
+    //Initialize i_temp (to avoid parameter manipulation) and i_prime (in place of t and t_prime from algorithm)
     mpz_t i_temp;
     mpz_t i_prime;
     mpz_init_set_ui(i_temp, 0);
@@ -48,6 +46,8 @@ void mod_inverse(mpz_t i, mpz_t a, mpz_t n) {
     //Initialize temp variable to fake parrallel assignment
     mpz_t temp;
     mpz_init(temp);
+
+    //Follow the Extended Euclidean Algorithm
     while (mpz_sgn(r_prime) != 0) {
         mpz_fdiv_q(q, r, r_prime);
 
@@ -65,10 +65,12 @@ void mod_inverse(mpz_t i, mpz_t a, mpz_t n) {
     //Set i to final output of temp i
     mpz_set(i, i_temp);
 
+    //Remander is greater than one, set inverse to zero
     if (mpz_cmp_ui(r, 1) > 0) {
         mpz_set_ui(i, 0);
     }
 
+    //inverse is less than zero, add i by i+n
     if (mpz_sgn(i) == -1) {
         mpz_add(i_temp, i_temp, n);
         mpz_set(i, i_temp);
@@ -79,10 +81,10 @@ void mod_inverse(mpz_t i, mpz_t a, mpz_t n) {
 
 //Computes base^exponent mod modulus, then puts value in out
 //
-//out: output of the computed value
-//base: number that is the base value
-//exponent: number that is the exponent of the base
-//modulus: number that is be used to mod value
+//out: the var to store the computed value
+//base: the base number
+//exponent: the exponent number where base is raised to
+//modulus: the number used to mod base^exponent
 void pow_mod(mpz_t out, mpz_t base, mpz_t exponent, mpz_t modulus) {
     //Initialize variable that holds base, exponent, out to prevent unexpected manipulation of inputs
     mpz_t changing_base, changing_exponent, changing_out;
@@ -92,6 +94,7 @@ void pow_mod(mpz_t out, mpz_t base, mpz_t exponent, mpz_t modulus) {
     mpz_init_set(changing_base, base);
     mpz_init_set(changing_exponent, exponent);
 
+    //Follow Algorithm
     while (mpz_sgn(changing_exponent) == 1) {
         if (mpz_odd_p(changing_exponent) != 0) {
             mpz_mul(changing_out, changing_out, changing_base);
@@ -105,7 +108,9 @@ void pow_mod(mpz_t out, mpz_t base, mpz_t exponent, mpz_t modulus) {
     mpz_clears(changing_base, changing_exponent, changing_out, NULL);
 }
 
-//Tests if a number is prime via the Miller-Rabin Algorithm
+//Tests if a number p is prime via the Miller-Rabin Algorithm based on iters iterations
+//Returns true if number is prime
+//Returns false if number is not prime
 //
 //n: the number to test if prime or not
 //iters: amount of iterations to test prime number with
@@ -188,10 +193,9 @@ bool is_prime(mpz_t n, uint64_t iters) {
     return true;
 }
 
-//Generates a number that is bits long, then tests if prime using is_prime
-//Keeps generating until both conditions are satisfied
+//Generates a random number p that is bits long, then tests if its prime using is_prime
 //
-//p: the stored prime number
+//p: the var to store the prime number
 //bits: value of how large the number must be bit wise
 //iters: the amount of iterations to test if a number is prime
 void make_prime(mpz_t p, uint64_t bits, uint64_t iters) {
