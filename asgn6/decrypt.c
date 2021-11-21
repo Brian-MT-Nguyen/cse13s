@@ -1,4 +1,3 @@
-#include "numtheory.h"
 #include "rsa.h"
 #include <stdio.h>
 #include <gmp.h>
