@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
     }
 
     //Prints help message if prompted
-    if (help) {
+    if (help || optopt != 0) {
         printf("SYNOPSIS\n");
         printf("   Encrypts data using RSA encryption.\n");
         printf("   Encrypted data is decrypted by the decrypt program.\n");
@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
         printf("   -n pbfile       Public key file (default: rsa.pub).\n");
         return 0;
     }
-    //Creates/opens default write files if pbfile and/or pvfile was not specified
+    //Creates/opens default write files if pbfile was not specified
     if (!pb_opened) {
         pbfile = fopen("rsa.pub", "r");
     }

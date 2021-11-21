@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
     }
 
     //Prints help message if prompted
-    if (help) {
+    if (help || optopt != 0) {
         printf("SYNOPSIS\n");
         printf("   Decrypts data using RSA decryption.\n");
         printf("   Encrypted data is encrypted by the encrypt program.\n");

@@ -58,8 +58,8 @@ int main(int argc, char **argv) {
         }
     }
 
-    //Prints help message if prompted
-    if (help) {
+    //Prints help message if prompted or invalid use of arguments
+    if (help || optopt != 0) {
         printf("SYNOPSIS\n");
         printf("   Generates an RSA public/private key pair.\n");
 
