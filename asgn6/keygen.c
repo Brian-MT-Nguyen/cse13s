@@ -77,20 +77,20 @@ int main(int argc, char **argv) {
     if (!pb_opened || !pv_opened) {
         if (!pb_opened) {
             pbfile = fopen("rsa.pub", "w");
-	    if (pbfile == NULL) {
+            if (pbfile == NULL) {
                 fprintf(stderr, "Error creating public key file. Exiting program.\n");
                 fclose(pbfile);
                 exit(EXIT_FAILURE);
             }
-	}
+        }
         if (!pv_opened) {
             pvfile = fopen("rsa.priv", "w");
-	    if (pbfile == NULL) {
+            if (pbfile == NULL) {
                 fprintf(stderr, "Error creating private key file. Exiting program.\n");
                 fclose(pvfile);
                 exit(EXIT_FAILURE);
             }
-	}
+        }
     }
 
     //Set permissions to private file (only modifiable and accessible by owner)

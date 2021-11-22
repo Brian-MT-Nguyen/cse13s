@@ -75,11 +75,11 @@ int main(int argc, char **argv) {
     //Creates/opens default write file if pvfile was not specified
     if (!pv_opened) {
         pvfile = fopen("rsa.priv", "r");
-    	if (pvfile == NULL) {
-                fprintf(stderr, "Error opening private key file. Exiting program.\n");
-                fclose(pvfile);
-                exit(EXIT_FAILURE);
-            }
+        if (pvfile == NULL) {
+            fprintf(stderr, "Error opening private key file. Exiting program.\n");
+            fclose(pvfile);
+            exit(EXIT_FAILURE);
+        }
     }
 
     //Read private key and store info into initialized vars

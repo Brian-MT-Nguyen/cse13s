@@ -74,11 +74,11 @@ int main(int argc, char **argv) {
     //Creates/opens default write file if pbfile was not specified
     if (!pb_opened) {
         pbfile = fopen("rsa.pub", "r");
-    	if (pbfile == NULL) {
-                fprintf(stderr, "Error opening public key file. Exiting program.\n");
-                fclose(pbfile);
-                exit(EXIT_FAILURE);
-            }
+        if (pbfile == NULL) {
+            fprintf(stderr, "Error opening public key file. Exiting program.\n");
+            fclose(pbfile);
+            exit(EXIT_FAILURE);
+        }
     }
 
     //Read public key and store info into initialized vars
