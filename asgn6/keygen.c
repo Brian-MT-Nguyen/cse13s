@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
         }
         if (!pv_opened) {
             pvfile = fopen("rsa.priv", "w");
-            if (pbfile == NULL) {
+            if (pvfile == NULL) {
                 fprintf(stderr, "Error creating private key file. Exiting program.\n");
                 fclose(pvfile);
                 exit(EXIT_FAILURE);
