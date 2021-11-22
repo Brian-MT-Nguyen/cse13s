@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
         case 'o':
             outfile = fopen(optarg, "w");
             if (outfile == NULL) {
-                fprintf(stderr, "Error opening outfile. Exiting Program.\n");
+                fprintf(stderr, "Error creating outfile. Exiting Program.\n");
                 fclose(outfile);
                 exit(EXIT_FAILURE);
             }
@@ -75,6 +75,11 @@ int main(int argc, char **argv) {
     //Creates/opens default write file if pvfile was not specified
     if (!pv_opened) {
         pvfile = fopen("rsa.priv", "r");
+    	if (pvfile == NULL) {
+                fprintf(stderr, "Error opening private key file. Exiting program.\n");
+                fclose(pvfile);
+                exit(EXIT_FAILURE);
+            }
     }
 
     //Read private key and store info into initialized vars

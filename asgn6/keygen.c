@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
             pb_opened = true;
             pbfile = fopen(optarg, "w");
             if (pbfile == NULL) {
-                fprintf(stderr, "Error opening public key file. Exiting Program.\n");
+                fprintf(stderr, "Error creating public key file. Exiting Program.\n");
                 fclose(pbfile);
                 exit(EXIT_FAILURE);
             }
@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
             pv_opened = true;
             pvfile = fopen(optarg, "w");
             if (pvfile == NULL) {
-                fprintf(stderr, "Error opening private key file. Exiting Program.\n");
+                fprintf(stderr, "Error creating private key file. Exiting Program.\n");
                 fclose(pvfile);
                 exit(EXIT_FAILURE);
             }
@@ -77,10 +77,20 @@ int main(int argc, char **argv) {
     if (!pb_opened || !pv_opened) {
         if (!pb_opened) {
             pbfile = fopen("rsa.pub", "w");
-        }
+	    if (pbfile == NULL) {
+                fprintf(stderr, "Error creating public key file. Exiting program.\n");
+                fclose(pbfile);
+                exit(EXIT_FAILURE);
+            }
+	}
         if (!pv_opened) {
             pvfile = fopen("rsa.priv", "w");
-        }
+	    if (pbfile == NULL) {
+                fprintf(stderr, "Error creating private key file. Exiting program.\n");
+                fclose(pvfile);
+                exit(EXIT_FAILURE);
+            }
+	}
     }
 
     //Set permissions to private file (only modifiable and accessible by owner)
