@@ -76,7 +76,6 @@ int main(int argc, char **argv) {
         pbfile = fopen("rsa.pub", "r");
         if (pbfile == NULL) {
             fprintf(stderr, "Error opening public key file. Exiting program.\n");
-            fclose(pbfile);
             exit(EXIT_FAILURE);
         }
     }
