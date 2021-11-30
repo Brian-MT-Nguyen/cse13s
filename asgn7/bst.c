@@ -8,7 +8,7 @@ Node *bst_create(void) {
 }
 
 void bst_delete(Node **root) {
-    if ((*root)->left && (*root)->right && *root) {
+    if (*root) {
         bst_delete(&(*root)->left);
         bst_delete(&(*root)->right);
         node_delete(&*root);
@@ -66,7 +66,7 @@ Node *bst_insert(Node *root, char *oldspeak, char *newspeak) {
 }
 
 void bst_print(Node *root) {
-    if (root->left && root->right && root) {
+    if (root) {
         bst_print(root->left);
         node_print(root);
         bst_print(root->right);
