@@ -11,7 +11,11 @@ Node *node_create(char *oldspeak, char *newspeak) {
     Node *n = (Node *) malloc(sizeof(Node));
     if (n) {
         n->oldspeak = strdup(oldspeak);
-        n->newspeak = strdup(newspeak);
+        if (newspeak) {
+            n->newspeak = strdup(newspeak);
+        } else {
+            n->newspeak = NULL;
+        }
         n->left = NULL;
         n->right = NULL;
     }
@@ -23,7 +27,9 @@ Node *node_create(char *oldspeak, char *newspeak) {
 //n: the node
 void node_delete(Node **n) {
     free((*n)->oldspeak);
-    free((*n)->newspeak);
+    if ((*n)->newspeak) {
+        free((*n)->newspeak);
+    }
     free(*n);
     *n = NULL;
 }
