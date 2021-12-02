@@ -3,8 +3,7 @@
 #include <string.h>
 //
 Node *bst_create(void) {
-    Node *root = node_create(NULL, NULL);
-    return root;
+    return NULL;
 }
 
 void bst_delete(Node **root) {
@@ -49,19 +48,18 @@ Node *bst_find(Node *root, char *oldspeak) {
             return root;
         }
     }
-    return root;
+    return NULL;
 }
 
 Node *bst_insert(Node *root, char *oldspeak, char *newspeak) {
     if (root) {
         if (strcmp(root->oldspeak, oldspeak) == 0) {
-            return 0;
+            return root;
         } else if (strcmp(root->oldspeak, oldspeak) > 0) {
             root->left = bst_insert(root->left, oldspeak, newspeak);
         } else if (strcmp(root->oldspeak, oldspeak) < 0) {
             root->right = bst_insert(root->right, oldspeak, newspeak);
         }
-        return root;
     }
     return node_create(oldspeak, newspeak);
 }
