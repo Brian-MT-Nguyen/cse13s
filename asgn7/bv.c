@@ -59,9 +59,9 @@ bool bv_get_bit(BitVector *bv, uint32_t i) {
 }
 
 void bv_print(BitVector *bv) {
-    for(uint32_t i = 0; i < bv->length; i++) {
-        if(i%8 == 0) {
-        printf("#%d: %d\n", i/8, bv->vector[i/8]);
+    for (uint32_t i = 0; i < bv->length; i++) {
+        if (i % 8 == 0) {
+            printf("#%d: %d\n", i / 8, bv->vector[i / 8]);
         }
     }
 }
