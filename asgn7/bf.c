@@ -4,9 +4,9 @@
 #include <stdlib.h>
 
 struct BloomFilter {
-    uint64_t primary [2]; // Primary hash function salt.
-    uint64_t secondary [2]; // Secondary hash function salt.
-    uint64_t tertiary [2]; // Tertiary hash function salt.
+    uint64_t primary[2]; // Primary hash function salt.
+    uint64_t secondary[2]; // Secondary hash function salt.
+    uint64_t tertiary[2]; // Tertiary hash function salt.
     BitVector *filter;
 };
 
@@ -28,8 +28,8 @@ BloomFilter *bf_create(uint32_t size) {
 }
 
 void bf_delete(BloomFilter **bf) {
-    if(*bf) {
-        if((*bf)->filter) {
+    if (*bf) {
+        if ((*bf)->filter) {
             free((*bf)->filter);
         }
         free(*bf);
@@ -42,19 +42,20 @@ uint32_t bf_size(BloomFilter *bf) {
 }
 
 void bf_insert(BloomFilter *bf, char *oldspeak) {
-    uint32_t pri_index = hash(bf->primary, oldspeak);
-    uint32_t sec_index = hash(bf->secondary, oldspeak);
-    uint32_t ter_index = hash(bf->tertiary, oldspeak);
+    uint32_t pri_index = hash(bf->primary, oldspeak) % bf_size(bf);
+    uint32_t sec_index = hash(bf->secondary, oldspeak) % bf_size(bf);
+    uint32_t ter_index = hash(bf->tertiary, oldspeak) % bf_size(bf);
     bv_set_bit(bf->filter, pri_index);
     bv_set_bit(bf->filter, sec_index);
     bv_set_bit(bf->filter, ter_index);
 }
 
 bool bf_probe(BloomFilter *bf, char *oldspeak) {
-    uint32_t pri_index = hash(bf->primary, oldspeak);
-    uint32_t sec_index = hash(bf->secondary, oldspeak);
-    uint32_t ter_index = hash(bf->tertiary, oldspeak);
-    if(bv_get_bit(bf->filter, pri_index) && bv_get_bit(bf->filter, sec_index) && bv_get_bit(bf->filter, ter_index)) {
+    uint32_t pri_index = hash(bf->primary, oldspeak) % bf_size(bf);
+    uint32_t sec_index = hash(bf->secondary, oldspeak) % bf_size(bf);
+    uint32_t ter_index = hash(bf->tertiary, oldspeak) % bf_size(bf);
+    if (bv_get_bit(bf->filter, pri_index) && bv_get_bit(bf->filter, sec_index)
+        && bv_get_bit(bf->filter, ter_index)) {
         return true;
     }
     return false;
@@ -63,7 +64,7 @@ bool bf_probe(BloomFilter *bf, char *oldspeak) {
 uint32_t bf_count(BloomFilter *bf) {
     uint32_t count = 0;
     for (uint32_t i = 0; i < bf_size(bf); i++) {
-        if(bv_get_bit(bf->filter, i)) {
+        if (bv_get_bit(bf->filter, i)) {
             count += 1;
         }
     }
