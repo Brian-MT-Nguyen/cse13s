@@ -53,21 +53,30 @@ Node *bst_find(Node *root, char *oldspeak) {
 
 Node *bst_insert(Node *root, char *oldspeak, char *newspeak) {
     if (root) {
-        if (strcmp(root->oldspeak, oldspeak) == 0) {
-            return root;
-        } else if (strcmp(root->oldspeak, oldspeak) > 0) {
+        if (strcmp(root->oldspeak, oldspeak) > 0) {
             root->left = bst_insert(root->left, oldspeak, newspeak);
         } else if (strcmp(root->oldspeak, oldspeak) < 0) {
             root->right = bst_insert(root->right, oldspeak, newspeak);
         }
+        return root;
     }
-    return node_create(oldspeak, newspeak);
+    return root = node_create(oldspeak, newspeak);
 }
 
 void bst_print(Node *root) {
+    static int depth = 0;
     if (root) {
-        bst_print(root->left);
-        node_print(root);
+        depth += 1;
         bst_print(root->right);
+        depth -= 1;
+
+        for (int i = 0; i < depth; i++) {
+            printf("       ");
+        }
+        node_print(root);
+
+        depth += 1;
+        bst_print(root->left);
+        depth -= 1;
     }
 }
