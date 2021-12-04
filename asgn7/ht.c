@@ -27,7 +27,7 @@ void ht_delete(HashTable **ht) {
             for (uint32_t i = 0; i < (*ht)->size; i++) {
                 bst_delete(&(*ht)->trees[i]);
             }
-            free(&(*ht)->trees);
+            free((*ht)->trees);
         }
         free(*ht);
         *ht = NULL;
@@ -45,7 +45,7 @@ Node *ht_lookup(HashTable *ht, char *oldspeak) {
 
 void ht_insert(HashTable *ht, char *oldspeak, char *newspeak) {
     uint32_t index = hash(ht->salt, oldspeak) % ht->size;
-    bst_insert(ht->trees[index], oldspeak, newspeak);
+    ht->trees[index] = bst_insert(ht->trees[index], oldspeak, newspeak);
 }
 
 uint32_t ht_count(HashTable *ht) {
@@ -75,6 +75,7 @@ double ht_avg_bst_height(HashTable *ht) {
 
 void ht_print(HashTable *ht) {
     for (uint32_t i = 0; i < ht->size; i++) {
+        printf("#%d:\n", i);
         bst_print(ht->trees[i]);
     }
 }
