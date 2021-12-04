@@ -25,12 +25,14 @@ Node *node_create(char *oldspeak, char *newspeak) {
 //
 //n: the node
 void node_delete(Node **n) {
-    free((*n)->oldspeak);
-    if((*n)->newspeak) {
-        free((*n)->newspeak);
+    if (*n) {
+        free((*n)->oldspeak);
+        if ((*n)->newspeak) {
+            free((*n)->newspeak);
+        }
+        free(*n);
+        *n = NULL;
     }
-    free(*n);
-    *n = NULL;
 }
 
 //Prints out oldspeak its newspeak translation of the node if not NULL
