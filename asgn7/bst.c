@@ -64,19 +64,9 @@ Node *bst_insert(Node *root, char *oldspeak, char *newspeak) {
 }
 
 void bst_print(Node *root) {
-    static int depth = 0;
     if (root) {
-        depth += 1;
         bst_print(root->right);
-        depth -= 1;
-
-        for (int i = 0; i < depth; i++) {
-            printf("       ");
-        }
         node_print(root);
-
-        depth += 1;
         bst_print(root->left);
-        depth -= 1;
     }
 }
