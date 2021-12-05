@@ -127,6 +127,8 @@ int main(int argc, char **argv) {
     fclose(newspeak_file);
     bf_delete(&bf);
     ht_delete(&ht);
+    bst_delete(&bad_words);
+    bst_delete(&mixed_words);
     clear_words();
     regfree(&word_regex);
 }
