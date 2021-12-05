@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+uint64_t lookups = 0;
+
 struct HashTable {
     uint64_t salt[2];
     uint32_t size;
@@ -39,11 +41,13 @@ uint32_t ht_size(HashTable *ht) {
 }
 
 Node *ht_lookup(HashTable *ht, char *oldspeak) {
+    lookups += 1;
     uint32_t index = hash(ht->salt, oldspeak) % ht->size;
     return bst_find(ht->trees[index], oldspeak);
 }
 
 void ht_insert(HashTable *ht, char *oldspeak, char *newspeak) {
+    lookups += 1;
     uint32_t index = hash(ht->salt, oldspeak) % ht->size;
     ht->trees[index] = bst_insert(ht->trees[index], oldspeak, newspeak);
 }

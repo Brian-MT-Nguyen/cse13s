@@ -1,6 +1,8 @@
 #include "bst.h"
 #include <stdio.h>
 #include <string.h>
+
+uint64_t branches = 0;
 //
 Node *bst_create(void) {
     return NULL;
@@ -40,6 +42,7 @@ uint32_t bst_size(Node *root) {
 
 Node *bst_find(Node *root, char *oldspeak) {
     if (root) {
+        branches += 1;
         if (strcmp(root->oldspeak, oldspeak) > 0) {
             return bst_find(root->left, oldspeak);
         } else if (strcmp(root->oldspeak, oldspeak) < 0) {
@@ -53,6 +56,7 @@ Node *bst_find(Node *root, char *oldspeak) {
 
 Node *bst_insert(Node *root, char *oldspeak, char *newspeak) {
     if (root) {
+        branches += 1;
         if (strcmp(root->oldspeak, oldspeak) > 0) {
             root->left = bst_insert(root->left, oldspeak, newspeak);
         } else if (strcmp(root->oldspeak, oldspeak) < 0) {
