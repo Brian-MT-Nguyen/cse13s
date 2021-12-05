@@ -12,7 +12,7 @@
 #include <regex.h>
 
 #define OPTIONS "ht:f:s"
-#define WORD    "[a-zA-Z0-9_]+"
+#define WORD    "[a-zA-Z0-9_]+(('|-)[a-zA-Z0-9_]+)*"
 
 int main(int argc, char **argv) {
     //Initialize variables used to parse through command line
@@ -104,7 +104,11 @@ int main(int argc, char **argv) {
         }
     }
     if (stats) {
-        printf("lol");
+        printf("Average BST size: %0.6f\n", ht_avg_bst_size(ht));
+        printf("Average BST height: %0.6f\n", ht_avg_bst_height(ht));
+        printf("Average branches traversed: %0.6f\n", (double) branches / lookups);
+        printf("Hash table load: %0.6f\n%%", 100.0 * ((double) ht_count(ht) / ht_size(ht)));
+        printf("Bloom filter load: %0.6f\n%%", 100.0 * ((double) bf_count(bf) / bf_size(bf)));
     } else {
 
         if ((bst_size(bad_words) > 0) && (bst_size(mixed_words) > 0)) {
