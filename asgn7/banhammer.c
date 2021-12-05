@@ -12,7 +12,7 @@
 #include <regex.h>
 
 #define OPTIONS "ht:f:s"
-#define WORD    "[a-zA-Z0-9_]+(('|-)[a-zA-Z0-9_]+)*"
+#define WORD    "([a-zA-Z0-9_]+)(('|-)[a-zA-Z0-9_]+)*"
 
 int main(int argc, char **argv) {
     //Initialize variables used to parse through command line
