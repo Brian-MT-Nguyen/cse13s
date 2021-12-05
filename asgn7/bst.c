@@ -69,8 +69,8 @@ Node *bst_insert(Node *root, char *oldspeak, char *newspeak) {
 
 void bst_print(Node *root) {
     if (root) {
-        bst_print(root->right);
-        node_print(root);
         bst_print(root->left);
+        node_print(root);
+        bst_print(root->right);
     }
 }
