@@ -78,9 +78,8 @@ int main(int argc, char **argv) {
 
     //Initialize Regular Expression (word) used to match user's words and checks if not successfully made
     regex_t word_regex;
-    if (regcomp(&word_regex, WORD, REG_EXTENDED) != 0) {
-        regfree(&word_regex);
-        exit(0);
+    if (regcomp(&word_regex, WORD, REG_EXTENDED)) {
+        return 1;
     }
 
     //Initialize bst trees that will hold user's bad/mixed inputted words
@@ -89,9 +88,7 @@ int main(int argc, char **argv) {
 
     //Get user's input (store in var) and parse through each word, then filter through it and add to respective trees
     char *input_word = NULL;
-    while ((input_word = next_word(stdin, &word_regex))) {
-        //Lowercase word to be case insensitive
-        tolower(*input_word);
+    while ((input_word = next_word(stdin, &word_regex)) != NULL) {
         //Checks if word detected by Bloom Filter
         if (bf_probe(bf, input_word)) {
             Node *word_checker = ht_lookup(ht, input_word);
@@ -130,5 +127,6 @@ int main(int argc, char **argv) {
     fclose(newspeak_file);
     bf_delete(&bf);
     ht_delete(&ht);
+    clear_words();
     regfree(&word_regex);
 }
