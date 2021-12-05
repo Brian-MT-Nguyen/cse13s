@@ -105,23 +105,22 @@ int main(int argc, char **argv) {
     }
     if (stats) {
         printf("lol");
-        exit(0);
-    }
+    } else {
 
-    if ((bst_size(bad_words) > 0) && (bst_size(mixed_words) > 0)) {
-        printf("%s\n", mixspeak_message);
-        bst_print(bad_words);
-        bst_print(mixed_words);
+        if ((bst_size(bad_words) > 0) && (bst_size(mixed_words) > 0)) {
+            printf("%s\n", mixspeak_message);
+            bst_print(bad_words);
+            bst_print(mixed_words);
+        }
+        if ((bst_size(bad_words) > 0) && (bst_size(mixed_words) == 0)) {
+            printf("%s\n", badspeak_message);
+            bst_print(bad_words);
+        }
+        if ((bst_size(bad_words) == 0) && (bst_size(mixed_words) > 0)) {
+            printf("%s\n", goodspeak_message);
+            bst_print(mixed_words);
+        }
     }
-    if ((bst_size(bad_words) > 0) && (bst_size(mixed_words) == 0)) {
-        printf("%s\n", badspeak_message);
-        bst_print(bad_words);
-    }
-    if ((bst_size(bad_words) == 0) && (bst_size(mixed_words) > 0)) {
-        printf("%s", goodspeak_message);
-        bst_print(mixed_words);
-    }
-
     //Close Files and Free Memory
     fclose(badspeak_file);
     fclose(newspeak_file);
