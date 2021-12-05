@@ -75,10 +75,13 @@ int main(int argc, char **argv) {
         bf_insert(bf, oldspeak);
         ht_insert(ht, oldspeak, newspeak);
     }
+    bf_print(bf);
+    ht_print(ht);
 
     //Initialize Regular Expression (word) used to match user's words and checks if not successfully made
     regex_t word_regex;
     if (regcomp(&word_regex, WORD, REG_EXTENDED) != 0) {
+        regfree(&word_regex);
         exit(0);
     }
 
@@ -96,15 +99,15 @@ int main(int argc, char **argv) {
             Node *word_checker = ht_lookup(ht, input_word);
             //Checks if word in Hash Table and badspeak word
             if ((word_checker != NULL) && (word_checker->newspeak != NULL)) {
-                bst_insert(mixed_words, word_checker->oldspeak, word_checker->newspeak);
+                mixed_words
+                    = bst_insert(mixed_words, word_checker->oldspeak, word_checker->newspeak);
             }
             //Checks if word in Hash Table and oldspeak & newspeak pair
             else if ((word_checker != NULL) && (word_checker->newspeak == NULL)) {
-                bst_insert(bad_words, word_checker->oldspeak, NULL);
+                bad_words = bst_insert(bad_words, word_checker->oldspeak, NULL);
             }
         }
     }
-
     if (stats) {
         printf("lol");
         exit(0);
