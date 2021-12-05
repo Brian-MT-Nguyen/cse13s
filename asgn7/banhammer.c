@@ -8,6 +8,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <regex.h>
 
@@ -89,6 +90,10 @@ int main(int argc, char **argv) {
     //Get user's input (store in var) and parse through each word, then filter through it and add to respective trees
     char *input_word = NULL;
     while ((input_word = next_word(stdin, &word_regex)) != NULL) {
+        //Lowercase each letter in the string (makes word lowercase)
+        for (uint32_t i = 0; i < strlen(input_word); i++) {
+            input_word[i] = tolower(input_word[i]);
+        }
         //Checks if word detected by Bloom Filter
         if (bf_probe(bf, input_word)) {
             Node *word_checker = ht_lookup(ht, input_word);
