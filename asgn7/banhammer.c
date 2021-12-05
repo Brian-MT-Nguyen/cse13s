@@ -75,8 +75,6 @@ int main(int argc, char **argv) {
         bf_insert(bf, oldspeak);
         ht_insert(ht, oldspeak, newspeak);
     }
-    bf_print(bf);
-    ht_print(ht);
 
     //Initialize Regular Expression (word) used to match user's words and checks if not successfully made
     regex_t word_regex;
