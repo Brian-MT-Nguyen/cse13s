@@ -90,7 +90,6 @@ int main(int argc, char **argv) {
     char *input_word = NULL;
     while ((input_word = next_word(stdin, &word_regex)) != NULL) {
         //Checks if word detected by Bloom Filter
-        printf("%s\n", input_word);
         if (bf_probe(bf, input_word)) {
             Node *word_checker = ht_lookup(ht, input_word);
             //Checks if word in Hash Table and badspeak word
