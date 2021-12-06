@@ -12,6 +12,10 @@ struct HashTable {
     Node **trees;
 };
 
+//Dynamically allocates an array of bst trees based the size + sets its size and salts for hashing
+//Returns the hash table
+//
+//size: the size of the array of bsts
 HashTable *ht_create(uint32_t size) {
     HashTable *ht = (HashTable *) malloc(sizeof(HashTable));
     if (ht) {
@@ -23,6 +27,9 @@ HashTable *ht_create(uint32_t size) {
     return ht;
 }
 
+//Frees the memory from all the bst trees and then the hash table
+//
+//ht: the hash table
 void ht_delete(HashTable **ht) {
     if (*ht) {
         if ((*ht)->trees) {
@@ -36,22 +43,41 @@ void ht_delete(HashTable **ht) {
     }
 }
 
+//Returns the size of the hash table
+//
+//ht: the hash table
 uint32_t ht_size(HashTable *ht) {
     return ht->size;
 }
 
+//Finds whether the oldspeak word is in the hash table
+//Returns the pointer to the node if in any tree
+//Returns NULL if not in any tree
+//
+//ht: the hash table
+//oldspeak: the oldspeak word
 Node *ht_lookup(HashTable *ht, char *oldspeak) {
     lookups += 1;
     uint32_t index = hash(ht->salt, oldspeak) % ht->size;
     return bst_find(ht->trees[index], oldspeak);
 }
 
+//Inserts the node into the hash table if not a duplicate
+//Return;
+//
+//ht: the hash table
+//oldspeak: the oldspeak word
+//newspeak: the newspeak word
 void ht_insert(HashTable *ht, char *oldspeak, char *newspeak) {
     lookups += 1;
     uint32_t index = hash(ht->salt, oldspeak) % ht->size;
     ht->trees[index] = bst_insert(ht->trees[index], oldspeak, newspeak);
 }
 
+//Finds the amount of non null bsts in the hash table
+//Returns the number of non null bsts
+//
+//ht: the hash table
 uint32_t ht_count(HashTable *ht) {
     uint32_t count = 0;
     for (uint32_t i = 0; i < ht->size; i++) {
@@ -62,6 +88,10 @@ uint32_t ht_count(HashTable *ht) {
     return count;
 }
 
+//Gets the total size of all bst trees and divides by the amount of non null bsts to get avg bst size
+//Returns the avg bst size in the hash table
+//
+//ht: the hash table
 double ht_avg_bst_size(HashTable *ht) {
     double avg_bst_size = 0;
     for (uint32_t i = 0; i < ht->size; i++) {
@@ -69,6 +99,11 @@ double ht_avg_bst_size(HashTable *ht) {
     }
     return (double) avg_bst_size / ht_count(ht);
 }
+
+//Gets the total height of all bst trees and divides by the amount of non null bsts to get avg bst height
+//Returns the avg bst height in the hash table
+//
+//ht: the hash table
 double ht_avg_bst_height(HashTable *ht) {
     double avg_bst_height = 0;
     for (uint32_t i = 0; i < ht->size; i++) {
@@ -77,6 +112,9 @@ double ht_avg_bst_height(HashTable *ht) {
     return (double) avg_bst_height / ht_count(ht);
 }
 
+//Prints all the bsts in the hash table in order
+//
+//ht: the hash table
 void ht_print(HashTable *ht) {
     for (uint32_t i = 0; i < ht->size; i++) {
         printf("#%d:\n", i);

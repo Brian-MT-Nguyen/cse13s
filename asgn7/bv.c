@@ -7,6 +7,10 @@ struct BitVector {
     uint8_t *vector;
 };
 
+//Dynamically allocates an array of bytes to hold at least length bits and sets length
+//Returns the bit vector
+//
+//length: the length of bits the vector will hold
 BitVector *bv_create(uint32_t length) {
     BitVector *bv = (BitVector *) malloc(sizeof(BitVector));
     if (bv) {
@@ -17,6 +21,9 @@ BitVector *bv_create(uint32_t length) {
     return bv;
 }
 
+//Frees memory of all bytes in vector then the vector itself
+//
+//bv: the bit vector
 void bv_delete(BitVector **bv) {
     if (*bv) {
         if ((*bv)->vector) {
@@ -27,10 +34,19 @@ void bv_delete(BitVector **bv) {
     }
 }
 
+//Returns the length in bits of the bit vector
+//
+//bv: the bit vector
 uint32_t bv_length(BitVector *bv) {
     return bv->length;
 }
 
+//Sets the ith bit to 1 if in range
+//Returns true if in range and added
+//Returns false if not in range and not added
+//
+//bv: the bit vector
+//i: the index
 bool bv_set_bit(BitVector *bv, uint32_t i) {
     if ((i < bv->length) && bv && bv->vector) {
         bv->vector[i / 8] |= (0x1 << i % 8);
@@ -39,6 +55,12 @@ bool bv_set_bit(BitVector *bv, uint32_t i) {
     return false;
 }
 
+//Sets the ith bit to 0 (clears it) if in range
+//Returns true if in range and cleared
+//Returns false if not in range and not cleared
+//
+//bv: the bit vector
+//i: the index
 bool bv_clr_bit(BitVector *bv, uint32_t i) {
     if ((i < bv->length) && bv && bv->vector) {
         bv->vector[i / 8] &= ~(0x1 << i % 8);
@@ -47,6 +69,12 @@ bool bv_clr_bit(BitVector *bv, uint32_t i) {
     return false;
 }
 
+//Gets the ith bit of the vector if in range
+//Returns true if the bit is 1
+//Returns false if the bit is 0
+//
+//bv: the bit vector
+//i: the index
 bool bv_get_bit(BitVector *bv, uint32_t i) {
     if ((i < bv->length) && bv && bv->vector) {
         uint8_t copy_byte = bv->vector[i / 8];
@@ -58,6 +86,9 @@ bool bv_get_bit(BitVector *bv, uint32_t i) {
     return false;
 }
 
+//Debug function to print the bytes of the vector
+//
+//bv: the bit vector
 void bv_print(BitVector *bv) {
     for (uint32_t i = 0; i < bv->length; i++) {
         if (i % 8 == 0) {
