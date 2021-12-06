@@ -49,18 +49,17 @@ int main(int argc, char **argv) {
     //Prints help message if prompted or invalid use of arguments
     if (help || optopt != 0) {
         printf("SYNOPSIS\n");
-        printf("   Encrypts data using RSA encryption.\n");
-        printf("   Encrypted data is decrypted by the decrypt program.\n");
+        printf("  A word filtering program for the GPRSC.\n");
+        printf("  Filters out and reports bad words parsed from stdin.\n");
 
         printf("\nUSAGE\n");
-        printf("   ./encrypt [-hv] [-i infile] [-o outfile] -n pubkey\n");
+        printf("  ./banhammer [-hs] [-t size] [-f size]\n");
 
         printf("\nOPTIONS\n");
-        printf("   -h              Display program help and usage.\n");
-        printf("   -v              Display verbose program output.\n");
-        printf("   -i infile       Input file of data to encrypt (default: stdin).\n");
-        printf("   -o outfile      Output file for encrypted data (default: stdout).\n");
-        printf("   -n pbfile       Public key file (default: rsa.pub).\n");
+        printf("  -h           Program help and usage.\n");
+        printf("  -s           Print program statistics.\n");
+        printf("  -t size      Specify hash table size (default: 2^16).\n");
+        printf("  -f size      Specify Bloom filter size (default: 2^20).\n");
         exit(EXIT_SUCCESS);
     }
 
