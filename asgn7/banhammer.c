@@ -27,8 +27,20 @@ int main(int argc, char **argv) {
     while ((opt = getopt(argc, argv, OPTIONS)) != -1) {
         switch (opt) {
         case 'h': help = true; break;
-        case 't': table_size = atoi(optarg); break;
-        case 'f': filter_size = atoi(optarg); break;
+        case 't':
+            table_size = atoi(optarg);
+            if (table_size < 0) {
+                fprintf(stderr, "Invalid hash table size.\n");
+                exit(EXIT_FAILURE);
+            }
+            break;
+        case 'f':
+            filter_size = atoi(optarg);
+            if (filter_size < 0) {
+                fprintf(stderr, "Invalid Bloom filter size.\n");
+                exit(EXIT_FAILURE);
+            }
+            break;
         case 's': stats = true; break;
         default: break;
         }
@@ -49,16 +61,32 @@ int main(int argc, char **argv) {
         printf("   -i infile       Input file of data to encrypt (default: stdin).\n");
         printf("   -o outfile      Output file for encrypted data (default: stdout).\n");
         printf("   -n pbfile       Public key file (default: rsa.pub).\n");
-        exit(0);
+        exit(EXIT_SUCCESS);
     }
 
     //Initialize Bloom Filter & Hash Table with inputted/default sizes
     BloomFilter *bf = bf_create(filter_size);
     HashTable *ht = ht_create(table_size);
 
+    //Print errors and exit program if unable to create filter/table
+    if (bf == NULL) {
+        fprintf(stderr, "Failed to create Bloom filter.\n");
+        exit(EXIT_FAILURE);
+    }
+    if (ht == NULL) {
+        fprintf(stderr, "Failed to create hash table.\n");
+        exit(EXIT_FAILURE);
+    }
+
     //Initialize variable to store badspeak words and open badspeak file to read from
     char badspeak[1024];
     FILE *badspeak_file = fopen("badspeak.txt", "r");
+
+    //Print error if unable to open badspeak file
+    if (badspeak_file == NULL) {
+        fprintf(stderr, "Failed to open badspeak.txt");
+        exit(EXIT_FAILURE);
+    }
 
     //Read through badspeak file, then place badspeak in the filter & table
     while (fscanf(badspeak_file, "%s\n", badspeak) > 0) {
@@ -71,6 +99,11 @@ int main(int argc, char **argv) {
     char newspeak[1024];
     FILE *newspeak_file = fopen("newspeak.txt", "r");
 
+    //Print error if unable to open newspeak file
+    if (newspeak_file == NULL) {
+        fprintf(stderr, "Failed to open newspeak.txt");
+        exit(EXIT_FAILURE);
+    }
     //Read through newspeak file, then place oldspeak in filter and word oldspeak & newspeak pair in table
     while (fscanf(newspeak_file, "%s %s\n", oldspeak, newspeak) > 0) {
         bf_insert(bf, oldspeak);
@@ -108,6 +141,7 @@ int main(int argc, char **argv) {
             }
         }
     }
+    //Print Stats if prompted
     if (stats) {
         printf("Average BST size: %0.6f\n", ht_avg_bst_size(ht));
         printf("Average BST height: %0.6f\n", ht_avg_bst_height(ht));
@@ -115,7 +149,7 @@ int main(int argc, char **argv) {
         printf("Hash table load: %0.6f%%\n", 100.0 * ((double) ht_count(ht) / ht_size(ht)));
         printf("Bloom filter load: %0.6f%%\n", 100.0 * ((double) bf_count(bf) / bf_size(bf)));
     } else {
-
+        //Print message out only if stats not prompted
         if ((bst_size(bad_words) > 0) && (bst_size(mixed_words) > 0)) {
             printf("%s", mixspeak_message);
             bst_print(bad_words);
@@ -139,4 +173,5 @@ int main(int argc, char **argv) {
     bst_delete(&mixed_words);
     clear_words();
     regfree(&word_regex);
+    exit(EXIT_SUCCESS);
 }
