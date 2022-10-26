@@ -1,17 +1,17 @@
 CC = clang
 CFLAGS = -Wall -Wpedantic -Werror -Wextra -O2
-OBJECTS = speck.o ht.o bst.o node.o bf.o bv.o parser.o wbh.o
+OBJECTS = speck.o ht.o bst.o node.o bf.o bv.o parser.o banhammer.o
 
-all: wbh
+all: banhammer
 
-wbh: $(OBJECTS)
-	$(CC) -o wbh $(OBJECTS)
+banhammer: $(OBJECTS)
+	$(CC) -o banhammer $(OBJECTS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<
 
 clean:
-	rm -f wbh $(OBJECTS)
+	rm -f banhammer $(OBJECTS)
 
 format:
 	clang-format -i -style=file *.[ch]
